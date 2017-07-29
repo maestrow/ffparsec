@@ -1,8 +1,12 @@
-﻿// Learn more about F# at http://fsharp.org
+﻿open System
 
-open System
+open Parsec
+open Parsec.Common
+open Parsec.Primitives
 
 [<EntryPoint>]
 let main argv =
-    printfn "Hello World from F#! %i" (Parsec.Main.X 1 2)
+    let p = pchar 'X'
+    let result = run p "X-factor"
+    printfn "Result: %A" result
     0 // return an integer exit code
