@@ -1,0 +1,7 @@
+source https://www.nuget.org/api/v2
+
+group Tests
+source https://www.nuget.org/api/v2
+
+nuget Expecto
+nuget Unquote
