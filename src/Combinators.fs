@@ -38,32 +38,18 @@ let (>>.) p1 p2 =
 
 /// combine two parsers as "A orElse B"
 let orElse parser1 parser2 =
-    // construct a new label
     let label = sprintf "%s orElse %s" (getLabel parser1) (getLabel parser2)
-
     let innerFn input =
-        // run parser1 with the input
-        let result1 = run parser1 input
-
-        // test the result for Failure/Success
+        let result1 = run parser1 input     // run parser1 with the input
         match result1 with
-        | Success result -> 
-            // if success, return the result
-            result1
-
-        | Failure (_,err) -> 
-            // if failed, run parser2 with the input
-            let result2 = run parser2 input
-
-            // return parser2's result
-            match result2 with
+        | Failure (_, err) -> 
+            let result2 = run parser2 input // if failed, run parser2 with the input
+            match result2 with      // return parser2's result
             | Success _ -> 
-                // if success, return the result
-                result2
-
+                result2             // if success, return the result
             | Failure (_,err) -> 
-                // if failed, return the error with overall label
-                Failure (label,err)
+                Failure (label,err) // if failed, return the error with overall label
+        | success -> success                // if success, return the result
 
     // return the Parser
     create innerFn label

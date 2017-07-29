@@ -25,12 +25,9 @@ module Labels =
         let newInnerFn input = 
             let result = parser.parseFn input
             match result with
-            | Success s ->
-                // if Success, do nothing
-                Success s 
             | Failure (oldLabel,err) -> 
-                // if Failure, return new label
-                Failure (newLabel,err)         // <====== use newLabel here
+                Failure (newLabel,err)         // if Failure, return new label
+            | success -> success
         // return the Parser
         create newInnerFn newLabel
 
@@ -49,7 +46,7 @@ module Core =
             | Failure (label,err) ->              // <====== "label" is new! 
                 // return error from parser1
                 Failure (label,err)  
-            | Success (value1,remainingInput) ->
+            | Success (value1, remainingInput) ->
                 // apply f to get a new parser
                 let p2 = f value1
                 // run parser with remaining input
