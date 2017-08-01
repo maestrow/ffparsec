@@ -7,9 +7,12 @@
 
   <ItemGroup>
     <Compile Include="Types.fs" />
-    <Compile Include="Common.fs" />
-    <Compile Include="Utils.fs" />
-    <Compile Include="Combinators.fs" />
+    <Compile Include="Core.fs" />
+    <Compile Include="Combinators.Core.fs" />
+    <Compile Include="Combinators.Logical.fs" />
+    <Compile Include="Combinators.Quantifiers.fs" />
+    <Compile Include="Combinators.UserState.fs" />
+    <Compile Include="Combinators.Common.fs" />
     <Compile Include="Primitives.fs" />
   </ItemGroup>
 

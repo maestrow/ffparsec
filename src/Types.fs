@@ -1,17 +1,15 @@
 namespace Parsec
 
-/// Aliases 
-type ParserLabel = string
-type ParserError = string
-
+/// 'i - Item type, 'u - UserState
+type Input<'Item, 'UserState> = {
+  InputStream: seq<'Item>
+  /// Current input stream position
+  Position: int
+  UserState: 'UserState
+} 
 /// Result type
-type Result<'a> =
-    | Success of 'a * string
-    | Failure of ParserLabel * ParserError 
+type ParseResult<'Result, 'UserState> = 
+  | Success of result: 'Result * consumed: int * state: 'UserState
+  | Fail of message: string
 
-/// A Parser structure has a parsing function & label
-type Parser<'a> = {
-    parseFn : (string -> Result<'a>)
-    label:  ParserLabel 
-    }
-
+type Parser<'Item, 'Result, 'UserState> = Input<'Item, 'UserState> -> ParseResult<'Result, 'UserState>
