@@ -1,3 +1,4 @@
+[<AutoOpen>]
 module Parsec.Primitives
 
 open System

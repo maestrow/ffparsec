@@ -1,5 +1,6 @@
 namespace Parsec.Combinators
 
+[<AutoOpen>]
 module Common = 
   
   open Parsec

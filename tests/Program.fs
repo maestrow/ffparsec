@@ -1,7 +1,6 @@
 ﻿open System
 
 open Parsec
-open Parsec.Primitives
 
 [<EntryPoint>]
 let main argv =

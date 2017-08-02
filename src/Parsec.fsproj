@@ -6,14 +6,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Utils.Trees.fs" />
+    
+    <Compile Include="Types.ParserInfo.fs" />
+    <Compile Include="Types.Debug.fs" />
     <Compile Include="Types.fs" />
-    <Compile Include="Core.fs" />
-    <Compile Include="ParserDescription.fs" /> 
+    <Compile Include="Types.Extensions.fs" />
+    
+    <Compile Include="Core.Debugging.fs" />
+    <Compile Include="Core.ParserDescription.fs" /> 
+    <Compile Include="Core.Run.fs" />
+    
     <Compile Include="Combinators.Core.fs" />
     <Compile Include="Combinators.Logical.fs" />
     <Compile Include="Combinators.Quantifiers.fs" />
     <Compile Include="Combinators.UserState.fs" />
     <Compile Include="Combinators.Common.fs" />
+    
     <Compile Include="Primitives.fs" />  
   </ItemGroup>
 

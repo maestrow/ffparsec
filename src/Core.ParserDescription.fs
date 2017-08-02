@@ -5,6 +5,8 @@ open System.Reflection
 open System.Diagnostics
 open System.Runtime.CompilerServices
 
+open Parsec.Types.ParserInfo
+
 [<AutoOpen>]
 module ParserDescriptionAttr =
 

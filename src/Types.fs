@@ -1,5 +1,8 @@
 namespace Parsec
 
+open Parsec.Types.ParserInfo
+open Parsec.Types.Debug
+
 
 type Input<'Item, 'UserState> = 
   {
@@ -7,6 +10,7 @@ type Input<'Item, 'UserState> =
     /// Current input stream position
     Position: int
     UserState: 'UserState
+    DebugInfo: IDebugInfo
   } 
 
 
@@ -18,19 +22,6 @@ type ParseResult<'Result, 'UserState> =
 
 type ParseFn<'Item, 'Result, 'UserState> = Input<'Item, 'UserState> -> ParseResult<'Result, 'UserState>
 
-
-type ParserInfo = 
-  {
-    Name: string
-    Description: string
-    Parameters: (string * ParameterInfo) list
-  }
-and ParameterInfo = 
-  | OrdinaryValue of string
-  | ParserValue of ParserInfo
-
-type IParser = 
-  abstract GetInfo: unit -> ParserInfo
 
 type Parser<'Item, 'Result, 'UserState> = 
   {
