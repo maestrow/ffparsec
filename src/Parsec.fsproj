@@ -9,14 +9,14 @@
     <Compile Include="Utils.Trees.fs" />
     
     <Compile Include="Types.ParserInfo.fs" />
-    <Compile Include="Types.Debug.fs" />
     <Compile Include="Types.fs" />
-    <Compile Include="Types.Extensions.fs" />
-    
-    <Compile Include="Core.Debugging.fs" />
+
+    <Compile Include="Core.Input.fs" />
     <Compile Include="Core.ParserDescription.fs" /> 
     <Compile Include="Core.Run.fs" />
-    
+
+    <Compile Include="Debugging.fs" />
+
     <Compile Include="Combinators.Core.fs" />
     <Compile Include="Combinators.Logical.fs" />
     <Compile Include="Combinators.Quantifiers.fs" />

@@ -8,6 +8,12 @@ open System.Runtime.CompilerServices
 open Parsec.Types.ParserInfo
 
 [<AutoOpen>]
+module ParserExtensions = 
+  type Parser<'Item, 'Result, 'UserState> with
+    static member Default = { Unchecked.defaultof<Parser<'Item, 'Result, 'UserState>> with IsAnonym = false } 
+    static member Anonym = { Unchecked.defaultof<Parser<'Item, 'Result, 'UserState>> with IsAnonym = true }
+
+[<AutoOpen>]
 module ParserDescriptionAttr =
 
   [<AllowNullLiteral>]

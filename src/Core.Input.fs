@@ -1,5 +1,5 @@
 [<AutoOpen>]
-module Parsec.TypesExtensions
+module Parsec.InputExtensions
 
 type Input<'Item, 'UserState> with
   
@@ -44,6 +44,4 @@ type Input<'Item, 'UserState> with
   member this.SuccessConsume count           = Success ((), count, this.UserState)
 
 
-type Parser<'Item, 'Result, 'UserState> with
-  static member Default = { Unchecked.defaultof<Parser<'Item, 'Result, 'UserState>> with IsAnonym = false } 
-  static member Anonym = { Unchecked.defaultof<Parser<'Item, 'Result, 'UserState>> with IsAnonym = true }
+
