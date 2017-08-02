@@ -8,12 +8,13 @@
   <ItemGroup>
     <Compile Include="Types.fs" />
     <Compile Include="Core.fs" />
+    <Compile Include="ParserDescription.fs" /> 
     <Compile Include="Combinators.Core.fs" />
     <Compile Include="Combinators.Logical.fs" />
     <Compile Include="Combinators.Quantifiers.fs" />
     <Compile Include="Combinators.UserState.fs" />
     <Compile Include="Combinators.Common.fs" />
-    <Compile Include="Primitives.fs" />
+    <Compile Include="Primitives.fs" />  
   </ItemGroup>
 
   <ItemGroup>

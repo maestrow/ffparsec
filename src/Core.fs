@@ -48,8 +48,14 @@ type Input<'Item, 'UserState> with
   member this.SuccessState   state           = this.SuccessState (0, state)
   member this.SuccessConsume count           = Success ((), count, this.UserState)
 
+
+type Parser<'Item, 'Result, 'UserState> with
+  static member Default = { Unchecked.defaultof<Parser<'Item, 'Result, 'UserState>> with IsAnonym = false } 
+  static member Anonym = { Unchecked.defaultof<Parser<'Item, 'Result, 'UserState>> with IsAnonym = true }
+
+
 let runParser (p: Parser<'i,'r,'u>) (input: Input<'i,'u>) = 
-  p input
+  p.Fn input
 
 let runParserOnString (p: Parser<char,'r,'u>) (inputStr: string) (state: 'u) = 
   let input = Input.FromString (inputStr, state)
@@ -59,11 +65,11 @@ let run (p: Parser<char,'r, unit>) (input: string) =
   runParserOnString p input ()
 
 let printResult (result: ParseResult<'Result, 'UserState>) =
-    match result with
-    | Success (value, _, state) -> 
+  match result with
+  | Success (value, _, state) -> 
       printfn "%A" value
       printfn "State: %A" state
-    | Fail error -> 
+  | Fail error -> 
       printfn "Error parsing: %s" error
 
 

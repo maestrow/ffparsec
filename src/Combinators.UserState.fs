@@ -4,23 +4,23 @@ module UserState =
 
   open Parsec
 
-  let getUserState = 
-    fun input -> Success (input.UserState, 0, input.UserState)
+  let getUserState () = 
+    anonym <| fun input -> input.SuccessResult input.UserState
 
   let setUserState (newUserState: 'UserState) = 
-    fun input -> Success ((), 0, newUserState)
+    anonym <| fun input -> input.SuccessState newUserState
 
   let updateUserState (f: 'u -> 'u) =
-    fun input -> Success ((), 0, input.UserState |> f)
+    anonym <| fun input -> input.SuccessState (f input.UserState)
 
   let userStateSatisfies (f: 'u -> bool) = 
-    fun input -> 
+    anonym <| fun input -> 
       match f input.UserState with
       | true -> Success ((), 0, input.UserState)
       | false -> Fail "userStateSatisfies"
 
   let createParserForwardedToRef () =
-    let dummyParser = fun input -> failwith "a parser created with createParserForwardedToRef was not initialized"
+    let dummyParser = anonym <| fun input -> failwith "a parser created with createParserForwardedToRef was not initialized"
     let r = ref dummyParser
-    let p = fun input -> !r input
+    let p = anonym <| fun input -> !r |> (fun a -> a.Fn) <| input
     p, r : Parser<'i,'r,'u> * Parser<'i,'r,'u> ref
