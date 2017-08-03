@@ -7,21 +7,20 @@ open Parsec
 open Parsec.Types.ParserInfo
 open Parsec.Utils.Trees
 
+type DebugResult = 
+  | Success of result: string * position: int * state: string
+  | Fail of message: string
+  | None
+
+type DebugInfoItem = 
+  {
+    Parser: ParserInfo
+    mutable Result: DebugResult
+  } with
+      member x.SetResult (r: DebugResult) = 
+        x.Result <- r
 
 module private Internals = 
-  
-  type DebugResult = 
-    | Success of result: string * position: int * state: string
-    | Fail of message: string
-    | None
-
-  type DebugInfoItem = 
-    {
-      Parser: ParserInfo
-      mutable Result: DebugResult
-    } with
-        member x.SetResult (r: DebugResult) = 
-          x.Result <- r
 
   let toDebugResult (r: ParseResult<'r,'u>) (initialPosition: int) : DebugResult = 
     match r with
@@ -41,6 +40,7 @@ type DebugLogger () =
     pointer <- tree
   let mutable position = 0
   member private x.Last with get () = pointer.Last()
+  member x.GetTree () = root
   
   interface IDebugLogger with
     member x.Position 
