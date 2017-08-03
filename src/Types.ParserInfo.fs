@@ -5,6 +5,7 @@ type ParserInfo =
     Name: string
     Description: string
     Parameters: (string * ParameterInfo) list
+    IsAnonym: bool
   }
 and ParameterInfo = 
   | OrdinaryValue of string

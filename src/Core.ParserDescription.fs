@@ -10,8 +10,8 @@ open Parsec.Types.ParserInfo
 [<AutoOpen>]
 module ParserExtensions = 
   type Parser<'Item, 'Result, 'UserState> with
-    static member Default = { Unchecked.defaultof<Parser<'Item, 'Result, 'UserState>> with IsAnonym = false } 
-    static member Anonym = { Unchecked.defaultof<Parser<'Item, 'Result, 'UserState>> with IsAnonym = true }
+    static member Default = { Unchecked.defaultof<Parser<'Item, 'Result, 'UserState>> with Info = { Unchecked.defaultof<ParserInfo> with IsAnonym = false } } 
+    static member Anonym = { Unchecked.defaultof<Parser<'Item, 'Result, 'UserState>> with Info = { Unchecked.defaultof<ParserInfo> with IsAnonym = true } }
 
 [<AutoOpen>]
 module ParserDescriptionAttr =
@@ -44,12 +44,13 @@ module ParserDescriptionFunctions =
     // 3 - DescriptionHelper.GetParserNameDescr, from which parser's name and description will be exctacted
     let name, descr = DescriptionHelper.GetParserNameDescr (frame)
     { 
-      Parser<'i,'r,'u>.Default with 
+      p with 
         Info = 
           { 
-            Name = name
-            Description = descr
-            Parameters = [] 
+            p.Info with
+              Name = name
+              Description = descr
+              Parameters = [] 
           }
         Fn = fn 
     }

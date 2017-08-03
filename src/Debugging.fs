@@ -33,7 +33,7 @@ module private Internals =
 
 open Internals
 
-type DebugInfo () = 
+type DebugLogger () = 
   let root = new Tree<DebugInfoItem>()
   let mutable pointer = root
   let parents = new Stack<Tree<DebugInfoItem>>()
@@ -42,7 +42,7 @@ type DebugInfo () =
   let mutable position = 0
   member private x.Last with get () = pointer.Last()
   
-  interface IDebugInfo with
+  interface IDebugLogger with
     member x.Position 
       with get () = position
       and set (value) = position <- value
@@ -60,11 +60,11 @@ type DebugInfo () =
 
 [<AutoOpen>]
 module Implementation = 
-  let runParserWithDebug (p: Parser<'i,'r,'u>) stream state = 
+  let runParserWithLogger (p: Parser<'i,'r,'u>) stream state = 
     {
       InputStream = stream
       Position = 0
       UserState = state
-      DebugInfo = DebugInfo()
+      DebugLogger = DebugLogger()
     }
     |> runParser p

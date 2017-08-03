@@ -24,6 +24,9 @@
     <Compile Include="Combinators.Common.fs" />
     
     <Compile Include="Primitives.fs" />  
+
+    <Compile Include="Visualizers/ConsoleParserVisualizer.fs" />
+    <Compile Include="Visualizers/ConsoleDebugLogVisualizer.fs" />
   </ItemGroup>
 
   <ItemGroup>

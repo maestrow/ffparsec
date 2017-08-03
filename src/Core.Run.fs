@@ -8,7 +8,7 @@ open Parsec.Types
 [<AutoOpen>]
 module private Internals = 
   type DummyDebugLogger () =
-    interface IDebugInfo with
+    interface IDebugLogger with
       member x.Position with get () = 0 and set (value) = ()
       member x.LevelDown () = ()
       member x.LevelUp () = ()
@@ -20,13 +20,13 @@ type Input<'Item, 'UserState> with
     { InputStream = str
       Position = 0
       UserState = state
-      DebugInfo = DummyDebugLogger() }
+      DebugLogger = DummyDebugLogger() }
 
   static member FromString (str: string) = 
     Input<string, unit>.FromString (str, ())
 
 let runParser (p: Parser<'i,'r,'u>) (input: Input<'i,'u>) = 
-  let di = input.DebugInfo
+  let di = input.DebugLogger
   di.Push p
   di.LevelDown ()
   let result = p.Fn input
