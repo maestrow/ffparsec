@@ -12,7 +12,7 @@ module Quantifiers =
     match parseResult with
     | Fail err -> 
       (result |> List.rev, 0, input.UserState)  
-    | Success (value, consumed, state) -> 
+    | Success (value, _, _) -> 
         parseResult 
         |> input.UpdateState
         |> parseZeroOrMore parser (value::result)
@@ -33,7 +33,7 @@ module Quantifiers =
       let firstResult = runParser p input 
       match firstResult with
       | Fail err -> Fail err // failed
-      | Success (value, consumed, state) -> 
+      | Success (value, _, _) -> 
           Success (firstResult 
           |> input.UpdateState
           |> parseZeroOrMore p [value]))

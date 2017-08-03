@@ -1,4 +1,4 @@
-namespace Parsec.Visuzlizers
+namespace Parsec.Visualizers
 
 open System
 open Parsec.Utils.Trees

@@ -32,7 +32,7 @@ let runParser (p: Parser<'i,'r,'u>) (input: Input<'i,'u>) =
   let result = p.Fn input
   di.LevelUp ()
   di.Position <- match result with
-                  | Success (_) -> max input.Position di.Position
+                  | Success _ -> max input.Position di.Position
                   | Fail _ -> input.Position
   di.SaveResult result
   result

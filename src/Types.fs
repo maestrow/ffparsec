@@ -22,7 +22,7 @@ and Input<'Item, 'UserState> =
   } 
 
 and ParseResult<'Result, 'UserState> = 
-  | Success of result: 'Result * consumed: int * state: 'UserState
+  | Success of result: 'Result * position: int * state: 'UserState
   | Fail of message: string
 
 and IDebugLogger = 

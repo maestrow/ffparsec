@@ -27,21 +27,19 @@ type Input<'Item, 'UserState> with
       this.CheckOverEnd ()
       this.[this.Position]
   
-  member private this.GetForwardPos (increment: int) = 
-    if increment < 0 then failwith "Increment can't be less than 0. So it isn't move forward, but backward."
-    let max = this.Length - this.Position - 1
-    if increment > max then failwithf "Increment can't be more that %i. You try to increment by %i" max increment
-    this.Position + increment
   member this.UpdateState parseResult = 
     match parseResult with
-    | Success (_, c, s) -> { this with Position = this.GetForwardPos c; UserState = s }
+    | Success (_, pos, s) -> 
+        this.CheckInRange pos
+        { this with Position = pos; UserState = s }
     | Fail _ -> this
   
-  member this.SuccessResult  (result, count) = Success (result, count, this.UserState)
-  member this.SuccessResult  result          = this.SuccessResult (result, 0)
-  member this.SuccessState   (count, state)  = Success ((), count, state)
-  member this.SuccessState   state           = this.SuccessState (0, state)
-  member this.SuccessConsume count           = Success ((), count, this.UserState)
+  member this.SuccessResult  (result, posDelta) = Success (result, this.Position + posDelta, this.UserState)
+  member this.SuccessResult  result             = this.SuccessResult (result, this.Position)
+  member this.SuccessState   (posDelta, state)  = Success ((), this.Position + posDelta, state)
+  member this.SuccessState   state              = this.SuccessState (this.Position, state)
+  member this.SuccessConsume posDelta           = Success ((), this.Position + posDelta, this.UserState)
+  member this.SuccessEmpty                      = Success ((), this.Position, this.UserState)
 
 
 

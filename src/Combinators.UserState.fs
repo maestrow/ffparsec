@@ -17,7 +17,7 @@ module UserState =
   let userStateSatisfies (f: 'u -> bool) = 
     anonym <| fun input -> 
       match f input.UserState with
-      | true -> Success ((), 0, input.UserState)
+      | true -> input.SuccessEmpty
       | false -> Fail "userStateSatisfies"
 
   let createParserForwardedToRef () =

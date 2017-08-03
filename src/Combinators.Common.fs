@@ -20,10 +20,10 @@ module Common =
   let sepBy p sep =
     sepBy1 p sep <|> returnp []
 
-  // let attemt p = 
-  //   fun input -> 
-  //     let result = runParser p input
-  //     match result with
-  //       | Fail err -> 
-  //           input.SuccessState (input)
-  //       | _ -> result
+  let attemt p = 
+    fun input -> 
+      let result = runParser p input
+      match result with
+      | Fail err -> 
+          input.SuccessEmpty
+      | _ -> result

@@ -24,10 +24,10 @@ module private Internals =
 
   let toDebugResult (r: ParseResult<'r,'u>) (initialPosition: int) : DebugResult = 
     match r with
-    | ParseResult.Success (result, consumed, state) -> 
+    | ParseResult.Success (result, pos, state) -> 
         let strRes = sprintf "%A" result
         let strState = sprintf "%A" state
-        DebugResult.Success (strRes, initialPosition + consumed, strState)
+        DebugResult.Success (strRes, pos, strState)
     | ParseResult.Fail err -> DebugResult.Fail err
 
 open Internals

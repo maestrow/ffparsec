@@ -59,3 +59,14 @@ module Logical =
     sequenceFn parserList
     |> describe
     |> withParams (parserList |> List.map (fun p -> "p", box p))
+
+  [<Description("NOT parser")>]
+  let notp p = 
+    (fun input -> 
+      let result = runParser p input
+      match result with
+      | Success _ -> Fail "Match occured in NOT parser"
+      | Fail _ -> input.SuccessEmpty)
+    |> parser
+    |> withParams [("p", box p)]
+    

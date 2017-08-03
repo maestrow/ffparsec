@@ -26,7 +26,7 @@ module Core =
   let (>>=) p f = bindp f p
 
   /// Lift a value to a Parser
-  let returnp x = anonym <| fun input -> Success (x, 0, input.UserState) // ignore the input and return x
+  let returnp x = anonym <| fun input -> input.SuccessResult x // ignore the input and return x
 
   /// apply a function to the value inside a parser
   let mapp f = 
