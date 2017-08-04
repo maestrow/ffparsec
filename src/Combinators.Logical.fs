@@ -9,7 +9,7 @@ module Logical =
   [<Description("Combine two parsers as A andThen B")>]
   let andThen p1 p2 = 
     p1 >>= (fun r1 -> 
-    p2 >>= (fun r2 -> returnp (r1, r2)))
+    p2 >>= (fun r2 -> returnP (r1, r2)))
     |> describe
     |> withParams [
         "p1", box p1
@@ -50,7 +50,7 @@ module Logical =
     let cons head tail = head::tail
     let consP = lift2 cons
     match parserList with
-    | [] -> returnp []
+    | [] -> returnP []
     | head::tail -> consP head (sequenceFn tail)
 
   /// Process the list of parsers
@@ -61,7 +61,7 @@ module Logical =
     |> withParams (parserList |> List.map (fun p -> "p", box p))
 
   [<Description("NOT parser")>]
-  let notp p = 
+  let notP p = 
     (fun input -> 
       let result = runParser p input
       match result with

@@ -15,7 +15,7 @@
     <Compile Include="Core.ParserDescription.fs" /> 
     <Compile Include="Core.Run.fs" />
 
-    <Compile Include="Debugging.fs" />
+    <Compile Include="Logging.fs" />
 
     <Compile Include="Combinators.Core.fs" />
     <Compile Include="Combinators.Logical.fs" />

@@ -8,10 +8,14 @@ open System.Runtime.CompilerServices
 open Parsec.Types.ParserInfo
 
 [<AutoOpen>]
-module ParserExtensions = 
+module Extensions = 
+  type ParserInfo with
+    static member Default = { Name = ""; Description = ""; Parameters = []; IsAnonym = false }
+    static member Anonym = { ParserInfo.Default with IsAnonym = true }
+  
   type Parser<'Item, 'Result, 'UserState> with
-    static member Default = { Unchecked.defaultof<Parser<'Item, 'Result, 'UserState>> with Info = { Unchecked.defaultof<ParserInfo> with IsAnonym = false } } 
-    static member Anonym = { Unchecked.defaultof<Parser<'Item, 'Result, 'UserState>> with Info = { Unchecked.defaultof<ParserInfo> with IsAnonym = true } }
+    static member Default = { Info = ParserInfo.Default; Fn = Unchecked.defaultof<ParseFn<'Item, 'Result, 'UserState>> } 
+    static member Anonym = { Info = ParserInfo.Anonym; Fn = Unchecked.defaultof<ParseFn<'Item, 'Result, 'UserState>> } 
 
 [<AutoOpen>]
 module ParserDescriptionAttr =

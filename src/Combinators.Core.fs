@@ -11,7 +11,7 @@ module Core =
 
   /// "bindP" takes a parser-producing function f, and a parser p
   /// and passes the output of p into f, to create a new parser
-  let bindp f p =
+  let bindP f p =
     anonym <| fun input ->
       let result1 = runParser p input
       match result1 with
@@ -23,26 +23,26 @@ module Core =
           |> runParser p2                   // run parser with remaining input
 
   /// Infix version of bindP
-  let (>>=) p f = bindp f p
+  let (>>=) p f = bindP f p
 
   /// Lift a value to a Parser
-  let returnp x = anonym <| fun input -> input.SuccessResult x // ignore the input and return x
+  let returnP x = anonym <| fun input -> input.SuccessResult x // ignore the input and return x
 
   /// apply a function to the value inside a parser
-  let mapp f = 
-    bindp (f >> returnp)
+  let mapP f = 
+    bindP (f >> returnP)
 
   /// "piping" version of mapf
-  let (|>>) x f = mapp f x
+  let (|>>) x f = mapP f x
 
   /// apply a wrapped function to a wrapped value
-  let applyp fp xp =         
+  let applyP fp xp =         
     fp >>= (fun f -> 
-    xp >>= (f >> returnp))
+    xp >>= (f >> returnP))
 
   /// infix version of apply
-  let (<*>) fp xp = applyp fp xp
+  let (<*>) fp xp = applyP fp xp
 
   /// lift a two parameter function to Parser World
   let lift2 f xP yP =
-    returnp f <*> xP <*> yP
+    returnP f <*> xP <*> yP

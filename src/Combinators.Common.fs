@@ -18,7 +18,7 @@ module Common =
 
   /// Parses zero or more occurrences of p separated by sep
   let sepBy p sep =
-    sepBy1 p sep <|> returnp []
+    sepBy1 p sep <|> returnP []
 
   let attemt p = 
     fun input -> 

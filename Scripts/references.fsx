@@ -4,7 +4,7 @@
 #load "../src/Core.Input.fs"
 #load "../src/Core.ParserDescription.fs"
 #load "../src/Core.Run.fs"
-#load "../src/Debugging.fs"
+#load "../src/Logging.fs"
 #load "../src/Combinators.Core.fs"
 #load "../src/Combinators.Logical.fs"
 #load "../src/Combinators.Quantifiers.fs"

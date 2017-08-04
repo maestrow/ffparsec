@@ -4,7 +4,7 @@ open System
 open Parsec.Utils.Trees
 open Parsec
 open Parsec.Types.ParserInfo
-open Parsec.Debugging
+open Parsec.Logging
 
 module ConsoleDebugLogVisualizer = 
   
@@ -19,8 +19,8 @@ module ConsoleDebugLogVisualizer =
       sprintf "%s: %s" pi.Name strParams
 
     let debugResultToString = function
-      | DebugResult.Success (res, pos, state) -> sprintf "Ok [%i]: %s. State: %s" pos res state
-      | DebugResult.Fail msg -> sprintf "Fail: %s" msg
+      | LogResultItem.Success (res, pos, state) -> sprintf "Ok [%i]: %s. State: %s" pos res state
+      | LogResultItem.Fail msg -> sprintf "Fail: %s" msg
       | _ -> "None"
 
     let debugInfoItemToString item = 
@@ -30,7 +30,7 @@ module ConsoleDebugLogVisualizer =
 
   open Internals
 
-  let serialize (tree: Tree<DebugInfoItem>) = 
+  let serialize (tree: Tree<LogItem>) = 
     tree
     |> Tree.map debugInfoItemToString
     |> Tree.toFlatList

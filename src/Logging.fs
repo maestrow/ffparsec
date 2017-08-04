@@ -1,4 +1,4 @@
-namespace Parsec.Debugging
+namespace Parsec.Logging
 
 open System.Collections.Generic
 open System.Linq
@@ -7,35 +7,35 @@ open Parsec
 open Parsec.Types.ParserInfo
 open Parsec.Utils.Trees
 
-type DebugResult = 
+type LogResultItem = 
   | Success of result: string * position: int * state: string
   | Fail of message: string
   | None
 
-type DebugInfoItem = 
+type LogItem = 
   {
     Parser: ParserInfo
-    mutable Result: DebugResult
+    mutable Result: LogResultItem
   } with
-      member x.SetResult (r: DebugResult) = 
+      member x.SetResult (r: LogResultItem) = 
         x.Result <- r
 
 module private Internals = 
 
-  let toDebugResult (r: ParseResult<'r,'u>) (initialPosition: int) : DebugResult = 
+  let toDebugResult (r: ParseResult<'r,'u>) (initialPosition: int) : LogResultItem = 
     match r with
     | ParseResult.Success (result, pos, state) -> 
         let strRes = sprintf "%A" result
         let strState = sprintf "%A" state
-        DebugResult.Success (strRes, pos, strState)
-    | ParseResult.Fail err -> DebugResult.Fail err
+        LogResultItem.Success (strRes, pos, strState)
+    | ParseResult.Fail err -> LogResultItem.Fail err
 
 open Internals
 
 type DebugLogger () = 
-  let root = new Tree<DebugInfoItem>()
+  let root = new Tree<LogItem>()
   let mutable pointer = root
-  let parents = new Stack<Tree<DebugInfoItem>>()
+  let parents = new Stack<Tree<LogItem>>()
   let setPointer tree = 
     pointer <- tree
   let mutable position = 0
@@ -52,19 +52,7 @@ type DebugLogger () =
     member x.LevelUp ()  = 
       setPointer (parents.Pop())
     member x.Push p = 
-      let item = { Parser = p.GetInfo(); Result = DebugResult.None }
+      let item = { Parser = p.GetInfo(); Result = LogResultItem.None }
       pointer.Add (item |> toNode)
     member x.SaveResult result = 
       (toDebugResult result position) |> x.Last.Item.SetResult
-
-
-[<AutoOpen>]
-module Implementation = 
-  let runParserWithLogger (p: Parser<'i,'r,'u>) stream state = 
-    {
-      InputStream = stream
-      Position = 0
-      UserState = state
-      DebugLogger = DebugLogger()
-    }
-    |> runParser p

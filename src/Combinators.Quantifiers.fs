@@ -44,7 +44,7 @@ module Quantifiers =
   /// Parses an optional occurrence of p and returns an option value.
   let opt p = 
     let some = p |>> Some
-    let none = returnp None
+    let none = returnP None
     some <|> none
     |> describe
     |> withParams [("p", box p)]
