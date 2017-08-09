@@ -22,11 +22,11 @@ let print result = result |> fst |> sprintf "%A"
 
 // Logical
 
-let ``test andThen`` () = ()
-let ``test orElse`` () = ()
-let ``test choice`` () = ()
-let ``test sequence`` () = ()
-let ``test not`` () = ()
+// let ``test andThen`` () = ()
+// let ``test orElse`` () = ()
+// let ``test choice`` () = ()
+// let ``test sequence`` () = ()
+// let ``test not`` () = ()
 
 // Quantifiers
 

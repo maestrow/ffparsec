@@ -1,6 +1,8 @@
 namespace Parsec
 
+open Parsec.Utils
 open Parsec.Types.ParserInfo
+open Result
 
 type Parser<'Item, 'Result, 'UserState> = 
   {
@@ -21,9 +23,9 @@ and Input<'Item, 'UserState> =
     DebugLogger: IDebugLogger
   } 
 
-and ParseResult<'Result, 'UserState> = 
-  | Success of result: 'Result * position: int * state: 'UserState
-  | Fail of message: string
+and ParseOk<'Result, 'UserState> = (* result: *) 'Result * (* position: *) int * (* state: *) 'UserState
+
+and ParseResult<'Result, 'UserState> = Result<ParseOk<'Result, 'UserState>, string>
 
 and IDebugLogger = 
   abstract member Position: int with get, set

@@ -8,8 +8,8 @@ module Logical =
   /// Combine two parsers as "A andThen B"
   [<Description("Combine two parsers as A andThen B")>]
   let andThen p1 p2 = 
-    p1 >>= (fun r1 -> 
-    p2 >>= (fun r2 -> returnP (r1, r2)))
+    p1 >- (fun r1 -> 
+    p2 >- (fun r2 -> returnP (r1, r2)))
     |> describe
     |> withParams [
         "p1", box p1
@@ -29,8 +29,8 @@ module Logical =
     (fun input ->
       let result1 = runParser p1 input
       match result1 with
-      | Success _ -> result1
-      | Fail err -> 
+      | Ok _ -> result1
+      | Error err -> 
           let result2 = runParser p2 input
           result2)
     |> parser
@@ -65,8 +65,8 @@ module Logical =
     (fun input -> 
       let result = runParser p input
       match result with
-      | Success _ -> Fail "Match occured in NOT parser"
-      | Fail _ -> input.SuccessEmpty)
+      | Ok _ -> Error "Match occured in NOT parser"
+      | Error _ -> input.SuccessEmpty)
     |> parser
     |> withParams [("p", box p)]
     

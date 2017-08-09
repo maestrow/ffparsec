@@ -18,7 +18,7 @@ module UserState =
     anonym <| fun input -> 
       match f input.UserState with
       | true -> input.SuccessEmpty
-      | false -> Fail "userStateSatisfies"
+      | false -> Error "userStateSatisfies"
 
   let createParserForwardedToRef () =
     let dummyParser = anonym <| fun input -> failwith "a parser created with createParserForwardedToRef was not initialized"

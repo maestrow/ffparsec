@@ -10,9 +10,9 @@ module Quantifiers =
   let rec private parseZeroOrMore parser result input =
     let parseResult = runParser parser input
     match parseResult with
-    | Fail err -> 
+    | Error err -> 
       (result |> List.rev, 0, input.UserState)  
-    | Success (value, _, _) -> 
+    | Ok (value, _, _) -> 
         parseResult 
         |> input.UpdateState
         |> parseZeroOrMore parser (value::result)
@@ -21,7 +21,7 @@ module Quantifiers =
   [<Description("Match zero or more occurences of the specified parser")>]
   let many p = 
     (fun input ->
-      Success (parseZeroOrMore p [] input))
+      Ok (parseZeroOrMore p [] input))
     |> parser
     |> withParams [("p", box p)]
 
@@ -32,9 +32,9 @@ module Quantifiers =
     (fun input ->
       let firstResult = runParser p input 
       match firstResult with
-      | Fail err -> Fail err // failed
-      | Success (value, _, _) -> 
-          Success (firstResult 
+      | Error err -> Error err // failed
+      | Ok (value, _, _) -> 
+          Ok (firstResult 
           |> input.UpdateState
           |> parseZeroOrMore p [value]))
     |> parser

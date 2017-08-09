@@ -15,15 +15,15 @@ module Core =
     anonym <| fun input ->
       let result1 = runParser p input
       match result1 with
-      | Fail err -> Fail err // return error from parser1
-      | Success (value1, _, _) ->
+      | Error err -> Error err // return error from parser1
+      | Ok (value1, _, _) ->
           let p2 = f value1    // apply f to get a new parser
           result1
           |> input.UpdateState 
           |> runParser p2                   // run parser with remaining input
 
   /// Infix version of bindP
-  let (>>=) p f = bindP f p
+  let (>-) p f = bindP f p
 
   /// Lift a value to a Parser
   let returnP x = anonym <| fun input -> input.SuccessResult x // ignore the input and return x
@@ -32,13 +32,12 @@ module Core =
   let mapP f = 
     bindP (f >> returnP)
 
-  /// "piping" version of mapf
   let (|>>) x f = mapP f x
 
   /// apply a wrapped function to a wrapped value
   let applyP fp xp =         
-    fp >>= (fun f -> 
-    xp >>= (f >> returnP))
+    fp >- (fun f -> 
+    xp >- (f >> returnP))
 
   /// infix version of apply
   let (<*>) fp xp = applyP fp xp

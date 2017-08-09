@@ -1,37 +1,28 @@
-﻿<Project Sdk="FSharp.NET.Sdk;Microsoft.NET.Sdk">
-
+<Project Sdk="FSharp.NET.Sdk;Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
+    <Compile Include="Utils.Rop.fs" />
     <Compile Include="Utils.Trees.fs" />
-    
     <Compile Include="Types.ParserInfo.fs" />
     <Compile Include="Types.fs" />
-
     <Compile Include="Core.Input.fs" />
-    <Compile Include="Core.ParserDescription.fs" /> 
+    <Compile Include="Core.ParserDescription.fs" />
     <Compile Include="Core.Run.fs" />
-
     <Compile Include="Logging.fs" />
-
     <Compile Include="Combinators.Core.fs" />
     <Compile Include="Combinators.Logical.fs" />
     <Compile Include="Combinators.Quantifiers.fs" />
     <Compile Include="Combinators.UserState.fs" />
     <Compile Include="Combinators.Common.fs" />
-    
-    <Compile Include="Primitives.fs" />  
-
+    <Compile Include="Primitives.fs" />
     <Compile Include="Visualizers/ConsoleParserVisualizer.fs" />
     <Compile Include="Visualizers/ConsoleDebugLogVisualizer.fs" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="FSharp.Core" Version="4.1.*" />
     <PackageReference Include="FSharp.NET.Sdk" Version="1.0.*" PrivateAssets="All" />
   </ItemGroup>
-
 </Project>

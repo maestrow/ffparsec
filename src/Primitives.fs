@@ -14,7 +14,7 @@ let pItem f =
     if f i then
       input.SuccessResult (i, 1)
     else
-      Fail (sprintf "Unexpected: %A" i))
+      Error (sprintf "Unexpected: %A" i))
   |> parser
 
 
@@ -42,5 +42,5 @@ module Generic =
     (fun (input: Input<'i,'u>) -> 
       match input.IsOverEnd with
       | true -> input.SuccessEmpty
-      | false -> Fail "Position is not over the end")
+      | false -> Error "Position is not over the end")
     |> parser

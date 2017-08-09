@@ -27,19 +27,19 @@ type Input<'Item, 'UserState> with
       this.CheckOverEnd ()
       this.[this.Position]
   
-  member this.UpdateState parseResult = 
+  member this.UpdateState (parseResult: ParseResult<'r,_>) = 
     match parseResult with
-    | Success (_, pos, s) -> 
+    | Ok (_, pos, s) -> 
         this.CheckInRange pos
         { this with Position = pos; UserState = s }
-    | Fail _ -> this
+    | Error _ -> this
   
-  member this.SuccessResult  (result, posDelta) = Success (result, this.Position + posDelta, this.UserState)
+  member this.SuccessResult  (result, posDelta) = ParseResult.Ok (result, this.Position + posDelta, this.UserState)
   member this.SuccessResult  result             = this.SuccessResult (result, this.Position)
-  member this.SuccessState   (posDelta, state)  = Success ((), this.Position + posDelta, state)
+  member this.SuccessState   (posDelta, state)  = ParseResult.Ok ((), this.Position + posDelta, state)
   member this.SuccessState   state              = this.SuccessState (this.Position, state)
-  member this.SuccessConsume posDelta           = Success ((), this.Position + posDelta, this.UserState)
-  member this.SuccessEmpty                      = Success ((), this.Position, this.UserState)
+  member this.SuccessConsume posDelta           = ParseResult.Ok ((), this.Position + posDelta, this.UserState)
+  member this.SuccessEmpty                      = ParseResult.Ok ((), this.Position, this.UserState)
 
 
 

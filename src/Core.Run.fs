@@ -32,8 +32,8 @@ let runParser (p: Parser<'i,'r,'u>) (input: Input<'i,'u>) =
   let result = p.Fn input
   di.LevelUp ()
   di.Position <- match result with
-                  | Success _ -> max input.Position di.Position
-                  | Fail _ -> input.Position
+                  | Ok _ -> max input.Position di.Position
+                  | Error _ -> input.Position
   di.SaveResult result
   result
 
@@ -57,10 +57,10 @@ let run (p: Parser<char,'r, unit>) (input: string) =
 
 let printResult (result: ParseResult<'Result, 'UserState>) =
   match result with
-  | Success (value, _, state) -> 
+  | Ok (value, _, state) -> 
       printfn "%A" value
       printfn "State: %A" state
-  | Fail error -> 
+  | Error error -> 
       printfn "Error parsing: %s" error
 
 
