@@ -31,13 +31,15 @@ type Input<'Item, 'UserState> with
   
   member this.UpdateState (parseResult: ParseResult<'r,_>) = 
     match parseResult with
-    | Ok (_, pos, s) -> { this with Position = pos; UserState = s }
+    | Ok (_, pos, s) -> 
+        //printfn "UpdateState. Pos: %i" pos
+        { this with Position = pos; UserState = s }
     | Error _ -> this
   
   member this.SuccessResult  (result, posDelta) = ParseResult.Ok (result, this.Position + posDelta, this.UserState)
-  member this.SuccessResult  result             = this.SuccessResult (result, this.Position)
+  member this.SuccessResult  result             = this.SuccessResult (result, 0)
   member this.SuccessState   (posDelta, state)  = ParseResult.Ok ((), this.Position + posDelta, state)
-  member this.SuccessState   state              = this.SuccessState (this.Position, state)
+  member this.SuccessState   state              = this.SuccessState (0, state)
   member this.SuccessConsume posDelta           = ParseResult.Ok ((), this.Position + posDelta, this.UserState)
   member this.SuccessEmpty                      = ParseResult.Ok ((), this.Position, this.UserState)
 

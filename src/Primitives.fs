@@ -36,7 +36,7 @@ let pItem f =
         input.SuccessResult (current, 1)
       else
         Error (sprintf "Unexpected: %A" current))
-    |> anonym 
+    |> anonym
   pCurrent () >- inner 
   |> describe "pItem" "Parse single item"
 

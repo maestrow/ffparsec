@@ -1,27 +1,17 @@
 namespace Parsec
 
 open System
-open System.Collections.Generic
-open System.Reflection
-open System.Diagnostics
-open System.Runtime.CompilerServices
-
 open Parsec.Types.ParserInfo
 
-[<AutoOpen>]
 module Extensions = 
   type ParserInfo with
     static member Default = { Name = ""; Description = ""; Parameters = []; IsAnonym = false }
     static member Anonym = { ParserInfo.Default with IsAnonym = true }
   
-  type Parser<'Item, 'Result, 'UserState> with
-    static member Default = { Info = ParserInfo.Default; Fn = Unchecked.defaultof<ParseFn<'Item, 'Result, 'UserState>> } 
-    static member Anonym = { Info = ParserInfo.Anonym; Fn = Unchecked.defaultof<ParseFn<'Item, 'Result, 'UserState>> } 
-
-
 [<AutoOpen>]
 module ParserDescriptionFunctions =
 
+  open Extensions
   /// Adds to parser name and description, extracted from parser definition function (a function, from where describe was called)
   let describe name descr (p: Parser<'i,'r,'u>) = 
     { 
@@ -35,10 +25,15 @@ module ParserDescriptionFunctions =
     }
 
   /// Creates parser from parse function
-  let parser name descr (fn: ParseFn<'i,'r,'u>) = { Parser<'i,'r,'u>.Default with Fn = fn } |> describe name descr
+  let parser name descr (fn: ParseFn<'i,'r,'u>) = 
+    { Info = ParserInfo.Default; Fn = fn } |> describe name descr
 
   /// Creates anonymous parser from parse function
-  let anonym (fn: ParseFn<'i,'r,'u>) = { Parser<'i,'r,'u>.Anonym with Fn = fn }
+  let anonym (fn: ParseFn<'i,'r,'u>) = //{ Parser<'i,'r,'u>.Anonym with Fn = fn }
+    {
+      Info = ParserInfo.Anonym
+      Fn = fn
+    }
 
   /// Get parse function from parser
   let fn (p: Parser<_, _, _>) = p.Fn

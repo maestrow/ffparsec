@@ -5,15 +5,13 @@ open Parsec
 open Parsec.Types.ParserInfo
 open Parsec.Types
 
-[<AutoOpen>]
-module private Internals = 
-  type DummyDebugLogger () =
-    interface IDebugLogger with
-      member x.Position with get () = 0 and set (value) = ()
-      member x.LevelDown () = ()
-      member x.LevelUp () = ()
-      member x.Push p = ()
-      member x.SaveResult result = ()
+type DummyDebugLogger () =
+  interface IDebugLogger with
+    member x.Position with get () = 0 and set (value) = ()
+    member x.LevelDown () = ()
+    member x.LevelUp () = ()
+    member x.Push p = ()
+    member x.SaveResult result = ()
 
 type Input<'Item, 'UserState> with
   static member FromString (str: string, state: 'u) = 
@@ -30,10 +28,8 @@ let runParser (p: Parser<'i,'r,'u>) (input: Input<'i,'u>) =
   di.Push p
   di.LevelDown ()
   let result = p.Fn input
+  //printfn "%s[%i]: %A" p.Info.Name input.Position result
   di.LevelUp ()
-  di.Position <- match result with
-                  | Ok _ -> max input.Position di.Position
-                  | Error _ -> input.Position
   di.SaveResult result
   result
 
@@ -57,10 +53,11 @@ let run (p: Parser<char,'r, unit>) (input: string) =
 
 let printResult (result: ParseResult<'Result, 'UserState>) =
   match result with
-  | Ok (value, _, state) -> 
+  | Ok (value, pos, state) -> 
       printfn "%A" value
+      printfn "Position: %i" pos
       printfn "State: %A" state
   | Error error -> 
-      printfn "Error parsing: %s" error
+      printfn "Error: %s" error
 
 

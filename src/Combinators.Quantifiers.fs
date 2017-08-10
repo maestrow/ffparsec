@@ -11,7 +11,7 @@ module Quantifiers =
     let parseResult = runParser parser input
     match parseResult with
     | Error err -> 
-      (result |> List.rev, 0, input.UserState)  
+      (result |> List.rev, input.Position, input.UserState)  
     | Ok (value, _, _) -> 
         parseResult 
         |> input.UpdateState

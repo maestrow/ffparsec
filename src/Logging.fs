@@ -22,7 +22,7 @@ type LogItem =
 
 module private Internals = 
 
-  let toDebugResult (r: ParseResult<'r,'u>) (initialPosition: int) : LogResultItem = 
+  let toDebugResult (r: ParseResult<'r,'u>) : LogResultItem = 
     match r with
     | Result.Ok (result, pos, state) -> 
         let strRes = sprintf "%A" result
@@ -55,4 +55,4 @@ type DebugLogger () =
       let item = { Parser = p.GetInfo(); Result = LogResultItem.None }
       pointer.Add (item |> toNode)
     member x.SaveResult result = 
-      (toDebugResult result position) |> x.Last.Item.SetResult
+      (toDebugResult result) |> x.Last.Item.SetResult

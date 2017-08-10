@@ -22,3 +22,9 @@ let printRes result =
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+let p1: Parser<char, string, unit> = pItemEq 'a' .>>. pItemEq '1' |>> (fun (a, b) -> [a;b] |> String.Concat)
+let p2: Parser<char, string, unit> = (pItemEq 'b' .>>. pItemEq '2') |>> (fun (a, b) -> [a;b] |> String.Concat)
+
+let p: Parser<char, string list, unit> = many (p1 <|> p2)
+run p "a1b2b2a1a1b2XYZ" |> printRes
+run p "a1b3a1" |> printRes

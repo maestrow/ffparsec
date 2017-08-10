@@ -1,4 +1,5 @@
 #load "../src/Utils.Trees.fs"
+#load "../src/Utils.Rop.fs"
 #load "../src/Types.ParserInfo.fs"
 #load "../src/Types.fs"
 #load "../src/Core.Input.fs"
