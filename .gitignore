@@ -1,5 +1,7 @@
 .paket
 packages
+*.dll
+*.exe
 
 # Build results
 [Dd]ebug/

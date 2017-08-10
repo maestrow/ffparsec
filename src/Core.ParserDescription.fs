@@ -1,6 +1,7 @@
 namespace Parsec
 
 open System
+open System.Collections.Generic
 open System.Reflection
 open System.Diagnostics
 open System.Runtime.CompilerServices
@@ -17,36 +18,12 @@ module Extensions =
     static member Default = { Info = ParserInfo.Default; Fn = Unchecked.defaultof<ParseFn<'Item, 'Result, 'UserState>> } 
     static member Anonym = { Info = ParserInfo.Anonym; Fn = Unchecked.defaultof<ParseFn<'Item, 'Result, 'UserState>> } 
 
-[<AutoOpen>]
-module ParserDescriptionAttr =
-
-  [<AllowNullLiteral>]
-  [<AttributeUsageAttribute(AttributeTargets.All)>]
-  type DescriptionAttribute (value: string) = 
-    inherit Attribute ()
-    member this.Value = value
-
 
 [<AutoOpen>]
 module ParserDescriptionFunctions =
 
-  type private DescriptionHelper = 
-    [<MethodImpl(MethodImplOptions.NoInlining)>]
-    static member GetParserNameDescr (frame: int) = 
-      let st = StackTrace()
-      let sf = st.GetFrame(frame)
-      let m = sf.GetMethod()
-      let attr = m.GetCustomAttribute<DescriptionAttribute>()
-      let descr = if isNull attr then String.Empty else attr.Value
-      m.Name, descr
-
-  let private createParser (p: Parser<'i,'r,'u>) (fn: ParseFn<'i,'r,'u>) = 
-    let frame = 3 // Frames count in stack trace from farser definition function. 
-    // 0 - parser definition function
-    // 1 - anonym | parser | describe
-    // 2 - createParser (this function)
-    // 3 - DescriptionHelper.GetParserNameDescr, from which parser's name and description will be exctacted
-    let name, descr = DescriptionHelper.GetParserNameDescr (frame)
+  /// Adds to parser name and description, extracted from parser definition function (a function, from where describe was called)
+  let describe name descr (p: Parser<'i,'r,'u>) = 
     { 
       p with 
         Info = 
@@ -54,19 +31,14 @@ module ParserDescriptionFunctions =
             p.Info with
               Name = name
               Description = descr
-              Parameters = [] 
           }
-        Fn = fn 
     }
 
   /// Creates parser from parse function
-  let parser (fn: ParseFn<'i,'r,'u>) = createParser Parser<'i,'r,'u>.Default fn
+  let parser name descr (fn: ParseFn<'i,'r,'u>) = { Parser<'i,'r,'u>.Default with Fn = fn } |> describe name descr
 
   /// Creates anonymous parser from parse function
-  let anonym (fn: ParseFn<'i,'r,'u>) = createParser Parser<'i,'r,'u>.Anonym fn
-
-  /// Adds to parser name and description, extracted from parser definition function (a function, from where describe was called)
-  let describe (p: Parser<'i,'r,'u>) = createParser p p.Fn
+  let anonym (fn: ParseFn<'i,'r,'u>) = { Parser<'i,'r,'u>.Anonym with Fn = fn }
 
   /// Get parse function from parser
   let fn (p: Parser<_, _, _>) = p.Fn

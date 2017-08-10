@@ -13,25 +13,25 @@ type Input<'Item, 'UserState> with
     with get () = this.Length = 0
   member private this.IsInRange (pos: int) =
     pos >= 0 && pos < this.Length
+  member this.IsPositionLegal 
+    with get () =
+      this.IsInRange this.Position
   member private this.CheckInRange (pos: int) = 
     if not <| this.IsInRange pos then failwithf "Specified position is not in sequence range: %i" pos
   member this.IsOverEnd 
     with get () = this.IsEmpty || this.Position >= this.Length
-  member private this.CheckOverEnd () = if this.IsOverEnd then failwith "No more input"
   member this.Item
     with get(index) = 
       this.CheckInRange index
       this.InputStream |> Seq.item index
   member this.CurrentItem
     with get () = 
-      this.CheckOverEnd ()
+      this.CheckInRange this.Position
       this.[this.Position]
   
   member this.UpdateState (parseResult: ParseResult<'r,_>) = 
     match parseResult with
-    | Ok (_, pos, s) -> 
-        this.CheckInRange pos
-        { this with Position = pos; UserState = s }
+    | Ok (_, pos, s) -> { this with Position = pos; UserState = s }
     | Error _ -> this
   
   member this.SuccessResult  (result, posDelta) = ParseResult.Ok (result, this.Position + posDelta, this.UserState)

@@ -18,16 +18,14 @@ module Quantifiers =
         |> parseZeroOrMore parser (value::result)
 
   /// Match zero or more occurences of the specified parser
-  [<Description("Match zero or more occurences of the specified parser")>]
   let many p = 
     (fun input ->
       Ok (parseZeroOrMore p [] input))
-    |> parser
+    |> parser "many" "Match zero or more occurences of the specified parser"
     |> withParams [("p", box p)]
 
 
   /// Match one or more occurences of the specified parser
-  [<Description("Match one or more occurences of the specified parser")>]
   let many1 p =
     (fun input ->
       let firstResult = runParser p input 
@@ -37,7 +35,7 @@ module Quantifiers =
           Ok (firstResult 
           |> input.UpdateState
           |> parseZeroOrMore p [value]))
-    |> parser
+    |> parser "many1" "Match one or more occurences of the specified parser"
     |> withParams [("p", box p)]
 
 
@@ -46,5 +44,5 @@ module Quantifiers =
     let some = p |>> Some
     let none = returnP None
     some <|> none
-    |> describe
+    |> describe "opt" "Parses an optional occurrence of p and returns an option value"
     |> withParams [("p", box p)]

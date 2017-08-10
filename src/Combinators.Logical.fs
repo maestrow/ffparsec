@@ -6,11 +6,10 @@ module Logical =
   open Parsec
 
   /// Combine two parsers as "A andThen B"
-  [<Description("Combine two parsers as A andThen B")>]
   let andThen p1 p2 = 
     p1 >- (fun r1 -> 
     p2 >- (fun r2 -> returnP (r1, r2)))
-    |> describe
+    |> describe "andThen" "Combine two parsers as A andThen B"
     |> withParams [
         "p1", box p1
         "p2", box p2 ] 
@@ -24,7 +23,6 @@ module Logical =
   let (>>.) p1 p2 = p1 .>>. p2 |>> snd
 
   /// Combine two parsers as A orElse B
-  [<Description("Combine two parsers as A orElse B")>]
   let orElse p1 p2 =
     (fun input ->
       let result1 = runParser p1 input
@@ -33,7 +31,7 @@ module Logical =
       | Error err -> 
           let result2 = runParser p2 input
           result2)
-    |> parser
+    |> parser "orElse" "Combine two parsers as A orElse B"
     |> withParams [
         "p1", box p1
         "p2", box p2 ]
@@ -54,19 +52,17 @@ module Logical =
     | head::tail -> consP head (sequenceFn tail)
 
   /// Process the list of parsers
-  [<Description("Process the list of parsers")>]
   let sequence parserList =
     sequenceFn parserList
-    |> describe
+    |> describe "sequence" "Process the list of parsers"
     |> withParams (parserList |> List.map (fun p -> "p", box p))
 
-  [<Description("NOT parser")>]
   let notP p = 
     (fun input -> 
       let result = runParser p input
       match result with
       | Ok _ -> Error "Match occured in NOT parser"
       | Error _ -> input.SuccessEmpty)
-    |> parser
+    |> parser "notP" "NOT parser"
     |> withParams [("p", box p)]
     

@@ -5,24 +5,45 @@ open System
 open Parsec
 open Parsec.Combinators.Core
 open Parsec.Combinators.Logical
+open System.Runtime.CompilerServices
+
+(*
+
+Для ряда парсеров удобно создать конкретные экземпляры для определенного типа элемента последовательности ('Item).
+Например, для последовательности символов (парсинг строк):
+pAny = Generic.pAny (). И далее в грамматиках использовать pAny вместо pAny ().
+
+pAny
+eof
+pCurrent
+
+*)
+
+
+let pCurrent () = 
+  (fun (input: Input<'i,'u>) -> 
+    match input.IsPositionLegal with
+    | true -> 
+        input.SuccessResult input.CurrentItem
+    | false -> Error (sprintf "Position is out of sequence range. Sequence length: %i, Position index: %i" input.Length input.Position))
+  |> parser "pCurrent" "Return current item"
 
 /// Parse single item
-[<Description("Parse single item")>]
 let pItem f = 
-  (fun (input: Input<'i,'u>) -> 
-    let i = input.CurrentItem
-    if f i then
-      input.SuccessResult (i, 1)
-    else
-      Error (sprintf "Unexpected: %A" i))
-  |> parser
-
+  let inner current = 
+    (fun (input: Input<'i,'u>) -> 
+      if f current then
+        input.SuccessResult (current, 1)
+      else
+        Error (sprintf "Unexpected: %A" current))
+    |> anonym 
+  pCurrent () >- inner 
+  |> describe "pItem" "Parse single item"
 
 // Match a sequence of items
-[<Description("Match a sequence of items")>]
 let pSeq (f: 'a -> 'a -> bool) s =
   (s |> Seq.map (f >> pItem) |> List.ofSeq |> sequence)
-  |> describe
+  |> describe "pSeq" "Match a sequence of items"
   |> withParams [("sequence", box s)]
 
 
@@ -30,17 +51,11 @@ let pItemEq i = pItem (fun current -> current = i)
 
 let pSeqEq s = pSeq (=) s
 
-module Generic = 
-  // Для данных парсеров удобно создать конкретные экземпляры для определенного типа элемента последовательности ('Item).
-  // Например, для последовательности символов (парсинг строк):
-  // pAny = Generic.pAny (). И далее в грамматиках использовать pAny вместо pAny ().
+let pAny () = pItem (fun current -> true) |> describe "pAny" "Parse any item"
 
-  let pAny () = pItem (fun current -> true)
-
-  [<Description("Succeeds when position is over the end of sequence")>]
-  let eof () = 
-    (fun (input: Input<'i,'u>) -> 
-      match input.IsOverEnd with
-      | true -> input.SuccessEmpty
-      | false -> Error "Position is not over the end")
-    |> parser
+let eof () = 
+  (fun (input: Input<'i,'u>) -> 
+    match input.IsOverEnd with
+    | true -> input.SuccessEmpty
+    | false -> Error "Position is not over the end")
+  |> parser "eof" "Succeeds when position is over the end of sequence"
