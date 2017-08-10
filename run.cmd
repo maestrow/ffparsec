@@ -1,1 +1,1 @@
-dotnet run --project .\tests\Tests.fsproj
+dotnet run --project .\tests\Tests.fsproj -- %*
