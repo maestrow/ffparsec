@@ -21,7 +21,7 @@ pCurrent
 
 
 /// Return current item
-let pCurrent () = 
+let current () = 
   (fun (input: Input<'i,'u>) -> 
     match input.IsPositionLegal with
     | true -> 
@@ -40,7 +40,7 @@ let getPos () =
 
 
 /// Parse single item
-let pItem f = 
+let item f = 
   let inner current = 
     (fun (input: Input<'i,'u>) -> 
       if f current then
@@ -48,24 +48,24 @@ let pItem f =
       else
         Error (sprintf "Unexpected: %A" current))
     |> anonym
-  pCurrent () >>= inner 
+  current () >>= inner 
   |> describe "pItem" "Parse single item"
 
 // Match a sequence of items
-let pSeq (f: 'a -> 'a -> bool) s =
-  (s |> Seq.map (f >> pItem) |> List.ofSeq |> sequence)
+let seqP (f: 'a -> 'a -> bool) s =
+  (s |> Seq.map (f >> item) |> List.ofSeq |> sequence)
   |> describe "pSeq" "Match a sequence of items"
   |> withParams [("sequence", box s)]
 
-let pOne i = pItem (fun current -> current = i)
+let one i = item (fun current -> current = i)
 
-let pOneOf items = pItem (fun current -> items |> Seq.exists ((=) current))
+let oneOf items = item (fun current -> items |> Seq.exists ((=) current))
 
-let pNoneOf items = pItem (fun current -> items |> Seq.exists ((=) current) |> not)
+let noneOf items = item (fun current -> items |> Seq.exists ((=) current) |> not)
 
-let pSeqEq s = pSeq (=) s
+let seqEq s = seqP (=) s
 
-let pAny () = pItem (fun current -> true) |> describe "pAny" "Parse any item"
+let any () = item (fun current -> true) |> describe "pAny" "Parse any item"
 
 let eof () = 
   (fun (input: Input<'i,'u>) -> 

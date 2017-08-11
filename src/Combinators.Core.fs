@@ -42,8 +42,23 @@ module Core =
     fp >>= (fun f -> 
     xp >>= (f >> returnP))
 
-  /// infix version of apply
+  let applyFp f xp =         
+    let fp = returnP f 
+    applyP fp xp
+
+  /// infix version of applyP
   let (<*>) fp xp = applyP fp xp
+
+  /// infix version of applyFp
+  (* Example:
+    f
+    <!> p1
+    <*> p2
+    <*> p3
+    ...
+    where f: 'a -> 'b -> 'c -> 'd
+  *)
+  let (<!>) f xp = applyFp f xp
 
   /// lift a two parameter function to Parser World
   let lift2 f xP yP =

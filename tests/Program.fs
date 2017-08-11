@@ -56,23 +56,23 @@ let tests =
 
     testList "Primitives" [
       
-      testList "pCurrent" [
-        testCase "pCurrent should fail when position is out of range" <| fun _ -> 
-          isError <| runr (pCurrent ()) ""
-        testCase "pCurrent succeeded when position is legal. Position should not change." <| fun _ -> 
-          isOk (runr (pCurrent ()) "x") (fun res pos _ -> 
+      testList "current" [
+        testCase "current should fail when position is out of range" <| fun _ -> 
+          isError <| runr (current ()) ""
+        testCase "current succeeded when position is legal. Position should not change." <| fun _ -> 
+          isOk (runr (current ()) "x") (fun res pos _ -> 
             res =! 'x'
             pos =! 0
           )
       ]
 
-      testList "pOne" [
-        testCase "pOne should fail on wrong item" <| fun _ -> 
-          isError <| runr (pOne 'a') "b"
-        testCase "pOne should fail when position is at EOF" <| fun _ -> 
-          isError <| runr (pOne 'a') ""
-        testCase "pOne succeeded" <| fun _ -> 
-          isOk (runr (pOne 'a') "a") (fun res pos _ -> 
+      testList "one" [
+        testCase "one should fail on wrong item" <| fun _ -> 
+          isError <| runr (one 'a') "b"
+        testCase "one should fail when position is at EOF" <| fun _ -> 
+          isError <| runr (one 'a') ""
+        testCase "one succeeded" <| fun _ -> 
+          isOk (runr (one 'a') "a") (fun res pos _ -> 
             res =! 'a'
             pos =! 1
           )
@@ -82,19 +82,19 @@ let tests =
     testList "Quantifiers" [
       testList "many" [ 
         testCase "many 1" <| fun () ->
-          let p = pAny () |> many
+          let p = any () |> many
           isOk (runr p "abc") (fun res pos _ -> 
             res =! ['a';'b';'c']
             pos =! 3
           )
         testCase "many 2" <| fun () ->
-          let p = pOne 'a' |> many
+          let p = one 'a' |> many
           isOk (runr p "aaa") (fun res pos _ -> 
             res =! ['a';'a';'a']
             pos =! 3
           )
         testCase "many 3" <| fun () ->
-          let p = pOne 'a' |> many
+          let p = one 'a' |> many
           isOk (runr p "aaab") (fun res pos _ -> 
             res =! ['a';'a';'a']
             pos =! 3
@@ -106,32 +106,32 @@ let tests =
       
       testList "andThen" [
         testCase "andThen 1" <| fun _ -> 
-          let any = pAny ()
+          let any = any ()
           let p = any .>>. any
           isOk (runr p "ab") (fun res pos _ -> 
             res =! ('a','b')
             pos =! 2
           )
         testCase "andThen 2" <| fun _ -> 
-          let any = pAny ()
+          let any = any ()
           let p = any .>>. any
           isError <| runr p "a"
         testCase "andThen 3" <| fun _ -> 
-          let p = pAny () .>>. pOne 'x'
+          let p = any () .>>. one 'x'
           isError <| runr p "aw"
       ]
       
       testList "orElse" [
         testCase "orElse 1" <| fun _ ->
-          let p = many (pOne 'a' <|> pOne 'b')
+          let p = many (one 'a' <|> one 'b')
           isOk (runr p "abbaabaxyz") (fun res pos _ -> 
             res =! ['a'; 'b'; 'b'; 'a'; 'a'; 'b'; 'a']
             pos =! 7
           )
         testCase "orElse 2" <| fun _ ->
           let concat (a: char, b: char) = [a;b] |> String.Concat
-          let p1 = pOne 'a' .>>. pOne '1' |>> concat
-          let p2 = pOne 'b' .>>. pOne '2' |>> concat
+          let p1 = one 'a' .>>. one '1' |>> concat
+          let p2 = one 'b' .>>. one '2' |>> concat
           let p = many (p1 <|> p2)
           
           isOk (runr p "a1b2b2a1a1b2XYZ") (fun res pos _ -> 
