@@ -23,7 +23,10 @@ module Core =
           |> runParser p2                   // run parser with remaining input
 
   /// Infix version of bindP
-  let (>-) p f = bindP f p
+  let (>>=) p f = bindP f p
+
+  let (>=>) f1 f2 = 
+      f1 >> bindP f2
 
   /// Lift a value to a Parser
   let returnP x = anonym <| fun input -> input.SuccessResult x // ignore the input and return x
@@ -36,8 +39,8 @@ module Core =
 
   /// apply a wrapped function to a wrapped value
   let applyP fp xp =         
-    fp >- (fun f -> 
-    xp >- (f >> returnP))
+    fp >>= (fun f -> 
+    xp >>= (f >> returnP))
 
   /// infix version of apply
   let (<*>) fp xp = applyP fp xp

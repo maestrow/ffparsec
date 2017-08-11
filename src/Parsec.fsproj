@@ -4,7 +4,6 @@
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Utils.Rop.fs" />
     <Compile Include="Utils.Trees.fs" />
     <Compile Include="Types.ParserInfo.fs" />
     <Compile Include="Types.fs" />
@@ -24,5 +23,5 @@
   <ItemGroup>
     <PackageReference Include="FSharp.Core" Version="4.1.*" />
     <PackageReference Include="FSharp.NET.Sdk" Version="1.0.*" PrivateAssets="All" />
-  </ItemGroup>
+  </ItemGroup> 
 </Project>

@@ -7,8 +7,8 @@ module Logical =
 
   /// Combine two parsers as "A andThen B"
   let andThen p1 p2 = 
-    p1 >- (fun r1 -> 
-    p2 >- (fun r2 -> returnP (r1, r2)))
+    p1 >>= (fun r1 -> 
+    p2 >>= (fun r2 -> returnP (r1, r2)))
     |> describe "andThen" "Combine two parsers as A andThen B"
     |> withParams [
         "p1", box p1

@@ -20,6 +20,7 @@ pCurrent
 *)
 
 
+/// Return current item
 let pCurrent () = 
   (fun (input: Input<'i,'u>) -> 
     match input.IsPositionLegal with
@@ -27,6 +28,16 @@ let pCurrent () =
         input.SuccessResult input.CurrentItem
     | false -> Error (sprintf "Position is out of sequence range. Sequence length: %i, Position index: %i" input.Length input.Position))
   |> parser "pCurrent" "Return current item"
+
+/// Get current input position
+let getPos () = 
+  parser "getPos" "Get current input position"
+  <| fun (input: Input<'i,'u>) -> 
+    input.SuccessResult input.Position
+
+// let skip () = 
+//   fun (input: Input<'i,'u>) -> 
+
 
 /// Parse single item
 let pItem f = 
@@ -37,7 +48,7 @@ let pItem f =
       else
         Error (sprintf "Unexpected: %A" current))
     |> anonym
-  pCurrent () >- inner 
+  pCurrent () >>= inner 
   |> describe "pItem" "Parse single item"
 
 // Match a sequence of items
@@ -46,10 +57,11 @@ let pSeq (f: 'a -> 'a -> bool) s =
   |> describe "pSeq" "Match a sequence of items"
   |> withParams [("sequence", box s)]
 
-
 let pOne i = pItem (fun current -> current = i)
 
 let pOneOf items = pItem (fun current -> items |> Seq.exists ((=) current))
+
+let pNoneOf items = pItem (fun current -> items |> Seq.exists ((=) current) |> not)
 
 let pSeqEq s = pSeq (=) s
 
