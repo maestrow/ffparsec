@@ -14,6 +14,12 @@ let run p stream =
   let logger = DebugLogger ()
   runWithLogger p stream () logger, logger
 
+/// Run parser on stream and get result
+let runr p stream = run p stream |> fst
+
+/// Run parser on stream and get logger
+let runl p stream = run p stream |> snd
+
 let createInput stream state logger = 
   {
     InputStream = stream
@@ -22,6 +28,14 @@ let createInput stream state logger =
     DebugLogger = logger
   }
 
+let isOk r callback = 
+  Expect.isOk r ""
+  match r with
+  | Ok (res, pos, state) -> callback res pos state
+  | _ -> ()
+
+let isError r = Expect.isError r ""
+
 [<Tests>]
 let tests = 
   testList "" [
@@ -29,9 +43,9 @@ let tests =
     testList "Input, UpdateState" [
       testCase "It should be allowed to expose an incorrect position in ParseOk" <| fun () ->
         // Why? If the parser succeeds on the last element, it can move the position further. And the next parser should fail if it expects the current element.
-        let p = 
+        let p: Parser<char, unit, unit> = 
           parser "p" ""
-          <| fun (input: Input<'i,'u>) -> 
+          <| fun input -> 
             Ok ((), -1, input.UserState) // set out of range position
         let logger = DebugLogger ()
         let input = createInput "" () logger
@@ -44,28 +58,24 @@ let tests =
       
       testList "pCurrent" [
         testCase "pCurrent should fail when position is out of range" <| fun _ -> 
-          let (r,_) = run (pCurrent ()) ""
-          Expect.isError r ""
+          isError <| runr (pCurrent ()) ""
         testCase "pCurrent succeeded when position is legal. Position should not change." <| fun _ -> 
-          let (Ok (res, pos, _),_) = run (pCurrent ()) "x"
-          res =! 'x'
-          pos =! 0
+          isOk (runr (pCurrent ()) "x") (fun res pos _ -> 
+            res =! 'x'
+            pos =! 0
+          )
       ]
 
-      testList "pItemEq" [
-        testCase "pItemEq on other item" <| fun _ -> 
-          let p = pItemEq 'a'
-          let (r,_) = run p "b"
-          Expect.isError r ""
-        testCase "pItemEq when EOF" <| fun _ -> 
-          let p = pItemEq 'a'
-          let (r,_) = run p ""
-          Expect.isError r ""
-        testCase "pItemEq succeeded" <| fun _ -> 
-          let p = pItemEq 'a'
-          let (Ok(res, pos, _),_) = run p "a"
-          res =! 'a'
-          pos =! 1
+      testList "pOne" [
+        testCase "pOne should fail on wrong item" <| fun _ -> 
+          isError <| runr (pOne 'a') "b"
+        testCase "pOne should fail when position is at EOF" <| fun _ -> 
+          isError <| runr (pOne 'a') ""
+        testCase "pOne succeeded" <| fun _ -> 
+          isOk (runr (pOne 'a') "a") (fun res pos _ -> 
+            res =! 'a'
+            pos =! 1
+          )
       ]
     ]
 
@@ -73,19 +83,22 @@ let tests =
       testList "many" [ 
         testCase "many 1" <| fun () ->
           let p = pAny () |> many
-          let (Ok (res, pos, _),_) = run p "abc"
-          res =! ['a';'b';'c']
-          pos =! 3
+          isOk (runr p "abc") (fun res pos _ -> 
+            res =! ['a';'b';'c']
+            pos =! 3
+          )
         testCase "many 2" <| fun () ->
-          let p = pItemEq 'a' |> many
-          let (Ok (res, pos, _),_) = run p "aaa"
-          res =! ['a';'a';'a']
-          pos =! 3
+          let p = pOne 'a' |> many
+          isOk (runr p "aaa") (fun res pos _ -> 
+            res =! ['a';'a';'a']
+            pos =! 3
+          )
         testCase "many 3" <| fun () ->
-          let p = pItemEq 'a' |> many
-          let (Ok (res, pos, _),_) = run p "aaab"
-          res =! ['a';'a';'a']
-          pos =! 3
+          let p = pOne 'a' |> many
+          isOk (runr p "aaab") (fun res pos _ -> 
+            res =! ['a';'a';'a']
+            pos =! 3
+          )
       ]
     ]
 
@@ -95,39 +108,41 @@ let tests =
         testCase "andThen 1" <| fun _ -> 
           let any = pAny ()
           let p = any .>>. any
-          let (Ok (res, pos, _), _) = run p "ab"
-          res =! ('a','b')
-          pos =! 2
+          isOk (runr p "ab") (fun res pos _ -> 
+            res =! ('a','b')
+            pos =! 2
+          )
         testCase "andThen 2" <| fun _ -> 
           let any = pAny ()
           let p = any .>>. any
-          let (Error err, _) = run p "a"
-          ()
+          isError <| runr p "a"
         testCase "andThen 3" <| fun _ -> 
-          let p = pAny () .>>. pItemEq 'x'
-          let (Error err, _) = run p "aw"
-          () 
-        ]
+          let p = pAny () .>>. pOne 'x'
+          isError <| runr p "aw"
+      ]
       
       testList "orElse" [
         testCase "orElse 1" <| fun _ ->
-          let p = many (pItemEq 'a' <|> pItemEq 'b')
-          let (Ok(res, pos, _), _) = run p "abbaabaxyz"
-          res =! ['a'; 'b'; 'b'; 'a'; 'a'; 'b'; 'a']
-          pos =! 7
+          let p = many (pOne 'a' <|> pOne 'b')
+          isOk (runr p "abbaabaxyz") (fun res pos _ -> 
+            res =! ['a'; 'b'; 'b'; 'a'; 'a'; 'b'; 'a']
+            pos =! 7
+          )
         testCase "orElse 2" <| fun _ ->
-          let p1: Parser<char, string, unit> = pItemEq 'a' .>>. pItemEq '1' |>> (fun (a, b) -> [a;b] |> String.Concat)
-          let p2: Parser<char, string, unit> = (pItemEq 'b' .>>. pItemEq '2') |>> (fun (a, b) -> [a;b] |> String.Concat)
-          let p: Parser<char, string list, unit> = many (p1 <|> p2)
+          let concat (a: char, b: char) = [a;b] |> String.Concat
+          let p1 = pOne 'a' .>>. pOne '1' |>> concat
+          let p2 = pOne 'b' .>>. pOne '2' |>> concat
+          let p = many (p1 <|> p2)
           
-          let (Ok(res1, pos1, _), _) = run p "a1b2b2a1a1b2XYZ"
-          res1 =! ["a1"; "b2"; "b2"; "a1"; "a1"; "b2"]
-          pos1 =! 12
+          isOk (runr p "a1b2b2a1a1b2XYZ") (fun res pos _ -> 
+            res =! ["a1"; "b2"; "b2"; "a1"; "a1"; "b2"]
+            pos =! 12
+          )
           
-          let (Ok(res2, pos2, _), _) = run p "a1b3a1"
-          res2 =! ["a1"]
-          pos2 =! 2
-
+          isOk (runr p "a1b3a1") (fun res pos _ -> 
+            res =! ["a1"]
+            pos =! 2
+          )
       ]
       
       testList "sequence" []

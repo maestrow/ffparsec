@@ -47,7 +47,9 @@ let pSeq (f: 'a -> 'a -> bool) s =
   |> withParams [("sequence", box s)]
 
 
-let pItemEq i = pItem (fun current -> current = i)
+let pOne i = pItem (fun current -> current = i)
+
+let pOneOf items = pItem (fun current -> items |> Seq.exists ((=) current))
 
 let pSeqEq s = pSeq (=) s
 
