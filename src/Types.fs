@@ -23,9 +23,9 @@ and Input<'Item, 'UserState> =
     DebugLogger: IDebugLogger
   } 
 
-and ParseOk<'Result, 'UserState> = (* result: *) 'Result * (* position: *) int * (* state: *) 'UserState
-
-and ParseResult<'Result, 'UserState> = Result<ParseOk<'Result, 'UserState>, string>
+and ParseResult<'Result, 'UserState> = 
+  | Ok of result: 'Result * position: int * state: 'UserState
+  | Error of string
 
 and IDebugLogger = 
   abstract member Position: int with get, set

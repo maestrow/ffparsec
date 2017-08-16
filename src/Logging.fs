@@ -24,11 +24,11 @@ module private Internals =
 
   let toDebugResult (r: ParseResult<'r,'u>) : LogResultItem = 
     match r with
-    | Result.Ok (result, pos, state) -> 
+    | Ok (result, pos, state) -> 
         let strRes = sprintf "%A" result
         let strState = sprintf "%A" state
         LogResultItem.Success (strRes, pos, strState)
-    | Result.Error err -> LogResultItem.Fail err
+    | Error err -> LogResultItem.Fail err
 
 open Internals
 

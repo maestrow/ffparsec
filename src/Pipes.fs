@@ -10,7 +10,7 @@ module Implementation =
   type CapturedResult<'r> = 'r * bool
 
   let (+) (p1: Parser<'i, CapturedResult<int>, 'u>) (p2: Parser<'i, int, 'u>) =
-    fun i -> 
+    anonym <| fun i -> 
       let r1 = runParser p1 i
       let r2 = runParser p2 i
       match r1, r2 with

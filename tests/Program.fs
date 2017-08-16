@@ -30,19 +30,20 @@ let createInput stream state logger =
   }
 
 let isOk r callback = 
-  Expect.isOk r ""
   match r with
   | Ok (res, pos, state) -> callback res pos state
-  | _ -> ()
+  | _ -> failtest "Ok expected"
 
-let isError r = Expect.isError r ""
+let isError = function
+  | Error _ -> ()
+  | Ok _ -> failtest "Error expected"
 
 [<Tests>]
 let tests = 
   testList "" [
     
     testList "Input, UpdateState" [
-      testCase "It should be allowed to expose an incorrect position in ParseOk" <| fun () ->
+      testCase "It should be allowed to expose an incorrect position in Parse.Ok result" <| fun () ->
         // Why? If the parser succeeds on the last element, it can move the position further. And the next parser should fail if it expects the current element.
         let p: Parser<char, unit, unit> = 
           parser "p" ""
