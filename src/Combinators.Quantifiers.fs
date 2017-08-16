@@ -4,7 +4,6 @@ namespace Parsec.Combinators
 module Quantifiers = 
   
   open Parsec
-  open Logical
 
   /// (helper) match zero or more occurences of the specified parser
   let rec private parseZeroOrMore parser result input =

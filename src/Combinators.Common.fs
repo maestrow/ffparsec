@@ -4,7 +4,6 @@ namespace Parsec.Combinators
 module Common = 
   
   open Parsec
-  open Logical
   open Quantifiers
 
   let between p1 p2 p3 = 
@@ -27,3 +26,14 @@ module Common =
       | Error err -> 
           input.SuccessEmpty
       | _ -> result
+  
+  /// Returns parser result if it satisfies condition
+  let (>>?) p f = 
+    let satisfy f r = 
+      anonym <| fun (input: Input<'i,'u>) -> 
+        match f r with
+        | true -> input.SuccessResult r
+        | _ -> Error (sprintf "Condition is false. Arg: %A" r)
+    p >>= satisfy f
+    |> describe ">>?" "Post-Condition (condition checked by function)"
+    |> withParams [("p", box p); ("f", box f)]

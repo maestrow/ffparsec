@@ -6,6 +6,7 @@ open Swensen.Unquote
 open Parsec
 open Parsec.Types.ParserInfo
 open Parsec.Combinators
+open Parsec.Primitives
 open Parsec.Run
 open Parsec.Logging
 open Parsec.Visualizers
@@ -68,11 +69,11 @@ let tests =
 
       testList "one" [
         testCase "one should fail on wrong item" <| fun _ -> 
-          isError <| runr (one 'a') "b"
+          isError <| runr (take 'a') "b"
         testCase "one should fail when position is at EOF" <| fun _ -> 
-          isError <| runr (one 'a') ""
+          isError <| runr (take 'a') ""
         testCase "one succeeded" <| fun _ -> 
-          isOk (runr (one 'a') "a") (fun res pos _ -> 
+          isOk (runr (take 'a') "a") (fun res pos _ -> 
             res =! 'a'
             pos =! 1
           )
@@ -88,13 +89,13 @@ let tests =
             pos =! 3
           )
         testCase "many 2" <| fun () ->
-          let p = one 'a' |> many
+          let p = take 'a' |> many
           isOk (runr p "aaa") (fun res pos _ -> 
             res =! ['a';'a';'a']
             pos =! 3
           )
         testCase "many 3" <| fun () ->
-          let p = one 'a' |> many
+          let p = take 'a' |> many
           isOk (runr p "aaab") (fun res pos _ -> 
             res =! ['a';'a';'a']
             pos =! 3
@@ -117,21 +118,21 @@ let tests =
           let p = any .>>. any
           isError <| runr p "a"
         testCase "andThen 3" <| fun _ -> 
-          let p = any () .>>. one 'x'
+          let p = any () .>>. take 'x'
           isError <| runr p "aw"
       ]
       
       testList "orElse" [
         testCase "orElse 1" <| fun _ ->
-          let p = many (one 'a' <|> one 'b')
+          let p = many (take 'a' <|> take 'b')
           isOk (runr p "abbaabaxyz") (fun res pos _ -> 
             res =! ['a'; 'b'; 'b'; 'a'; 'a'; 'b'; 'a']
             pos =! 7
           )
         testCase "orElse 2" <| fun _ ->
           let concat (a: char, b: char) = [a;b] |> String.Concat
-          let p1 = one 'a' .>>. one '1' |>> concat
-          let p2 = one 'b' .>>. one '2' |>> concat
+          let p1 = take 'a' .>>. take '1' |>> concat
+          let p2 = take 'b' .>>. take '2' |>> concat
           let p = many (p1 <|> p2)
           
           isOk (runr p "a1b2b2a1a1b2XYZ") (fun res pos _ -> 

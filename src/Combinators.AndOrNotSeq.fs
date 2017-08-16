@@ -1,7 +1,8 @@
 namespace Parsec.Combinators
 
+/// And, Or, Not parsers and parser sequences
 [<AutoOpen>]
-module Logical = 
+module AndOrNotSeq = 
   
   open Parsec
 
@@ -44,15 +45,14 @@ module Logical =
     listOfParsers 
     |> List.reduce (<|>)
 
-  let rec private sequenceFn parserList = 
-    let cons head tail = head::tail
-    let consP = lift2 cons
-    match parserList with
-    | [] -> returnP []
-    | head::tail -> consP head (sequenceFn tail)
-
   /// Process the list of parsers
   let sequence parserList =
+    let rec sequenceFn parserList = 
+      let cons head tail = head::tail
+      let consP = lift2 cons
+      match parserList with
+      | [] -> returnP []
+      | head::tail -> consP head (sequenceFn tail)
     sequenceFn parserList
     |> describe "sequence" "Process the list of parsers"
     |> withParams (parserList |> List.map (fun p -> "p", box p))
@@ -66,13 +66,3 @@ module Logical =
     |> parser "notP" "NOT parser"
     |> withParams [("p", box p)]
     
-  /// Returns parser result if it satisfies condition
-  let (>>?) p f = 
-    let satisfy f r = 
-      anonym <| fun (input: Input<'i,'u>) -> 
-        match f r with
-        | true -> input.SuccessResult r
-        | _ -> Error (sprintf "Condition is false. Arg: %A" r)
-    p >>= satisfy f
-    |> describe ">>?" "Post-Condition (condition checked by function)"
-    |> withParams [("p", box p); ("f", box f)]

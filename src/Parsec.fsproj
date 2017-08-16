@@ -8,15 +8,17 @@
     <Compile Include="Types.ParserInfo.fs" />
     <Compile Include="Types.fs" />
     <Compile Include="Core.Input.fs" />
-    <Compile Include="Core.ParserDescription.fs" />
+    <Compile Include="Core.ParserDescription.fs" /> 
     <Compile Include="Core.Run.fs" />
     <Compile Include="Logging.fs" />
     <Compile Include="Combinators.Core.fs" />
-    <Compile Include="Combinators.Logical.fs" />
+    <Compile Include="Combinators.AndOrNotSeq.fs" />
     <Compile Include="Combinators.Quantifiers.fs" />
-    <Compile Include="Combinators.UserState.fs" />
+    <Compile Include="Combinators.Input.fs" />
     <Compile Include="Combinators.Common.fs" />
-    <Compile Include="Primitives.fs" />
+    <Compile Include="Pipes.fs" />
+    <Compile Include="Primitives.Common.fs" />
+    <Compile Include="Primitives.Chars.fs" />
     <Compile Include="Visualizers/ConsoleParserVisualizer.fs" />
     <Compile Include="Visualizers/ConsoleDebugLogVisualizer.fs" />
   </ItemGroup>
