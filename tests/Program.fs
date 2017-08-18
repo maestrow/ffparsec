@@ -10,7 +10,8 @@ open Parsec.Primitives
 open Parsec.Run
 open Parsec.Logging
 open Parsec.Visualizers
-  
+open Parsec.Pipes
+
 let run p stream = 
   let logger = DebugLogger ()
   runWithLogger p stream () logger, logger
@@ -150,7 +151,64 @@ let tests =
       testList "sequence" []
     ]
 
+    testList "Pipes" [
+      testList "Two args" [
+        testCase "p1 + p2 => (fun () -> \"ok\")" <| fun _ -> 
+          let p1 = returnP 1
+          let p2 = returnP 2
+          let p = p1 + p2 => (fun () -> "ok")
+          isOk (runr p "") (fun res pos _ -> 
+            res() =! "ok"
+            pos =! 0
+          )
+        testCase "p1 + p2 => \"ok\"" <| fun _ -> 
+          let p1 = returnP 1
+          let p2 = returnP 2
+          let p = p1 + p2 => "ok"
+          isOk (runr p "") (fun res pos _ -> 
+            res =! "ok"
+            pos =! 0
+          )
+        testCase "+p1 + p2 => id" <| fun _ -> 
+          let p1 = returnP 1
+          let p2 = returnP 2
+          let p = +p1 + p2 => id
+          isOk (runr p "") (fun res pos _ -> 
+            res =! 1
+            pos =! 0
+          )
+        testCase "p1 + +p2 => id" <| fun _ -> 
+          let p1 = returnP 1
+          let p2 = returnP 2
+          let p = p1 + +p2 => id
+          isOk (runr p "") (fun res pos _ -> 
+            res =! 2
+            pos =! 0
+          )
+        testCase "+p1 + +p2 => (+)" <| fun _ -> 
+          let p1 = returnP 1
+          let p2 = returnP 2
+          let p = +p1 + +p2 => (+)
+          isOk (runr p "") (fun res pos _ -> 
+            res =! 3
+            pos =! 0
+          )
+      ]
+      testList "Three args" [
+        testCase "+p1 + +p2 => (+)" <| fun _ -> 
+          let p1 = returnP 1
+          let p2 = returnP 2
+          let p3 = returnP 3
+          let p = p1 + p2 + +p3 => (+)
+          isOk (runr p "") (fun res pos _ -> 
+            res =! 3
+            pos =! 0
+          )
+      ]
+      testList "Failing, Consuming and State" [
 
+      ]
+    ]
 
   ]
 

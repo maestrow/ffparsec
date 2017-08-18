@@ -16,7 +16,7 @@
     <Compile Include="Combinators.Quantifiers.fs" />
     <Compile Include="Combinators.Input.fs" />
     <Compile Include="Combinators.Common.fs" />
-    <Compile Include="Pipes.fs" />
+    <Compile Include="Pipes.fs" /> 
     <Compile Include="Primitives.Common.fs" />
     <Compile Include="Primitives.Chars.fs" />
     <Compile Include="Visualizers/ConsoleParserVisualizer.fs" />
