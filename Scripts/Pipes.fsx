@@ -13,12 +13,8 @@ open Parsec.Pipes
 
 let p1 = returnP 1
 let p2 = returnP 2
-let p3 = returnP 2
+let p3 = returnP 3
 
-let p12 = p1 + p2 
-let p = p12 + p3 => "ok"
+let p = +p1 + +p2 + +p3 => fun a b c -> a + b + c
 let r = run p ""
 
-match r with
-| Ok (res, _, _) -> printfn "%A" (res ())
-| _ -> ()

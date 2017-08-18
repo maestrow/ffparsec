@@ -13,6 +13,9 @@
 - серии статей [Understanding Parser Combinators](https://fsharpforfunandprofit.com/series/understanding-parser-combinators.html)
 - Библиотеки http://rspeele.github.io/FParsec-Pipes
 
+## Запуск тестов
+
+`./run.cmd --sequenced --summary`
 
 
 ## Дальнейнее развитие

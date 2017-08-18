@@ -195,13 +195,13 @@ let tests =
           )
       ]
       testList "Three args" [
-        testCase "+p1 + +p2 => (+)" <| fun _ -> 
+        testCase "+p1 + +p2 +p3 => fun a b c -> a + b + c" <| fun _ -> 
           let p1 = returnP 1
           let p2 = returnP 2
           let p3 = returnP 3
-          let p = p1 + p2 + +p3 => (+)
+          let p = +p1 + +p2 + +p3 => fun a b c -> a + b + c
           isOk (runr p "") (fun res pos _ -> 
-            res =! 3
+            res =! 6
             pos =! 0
           )
       ]
