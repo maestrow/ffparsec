@@ -6,7 +6,7 @@ open Parsec.Combinators
 [<AutoOpen>]
 module Implementation =
 
-  let wrap p = anonym <| fun i -> runParser p i
+  let private wrap p = anonym <| fun i -> runParser p i
 
   type Capture<'i,'r,'u> = Capture of Parser<'i,'r,'u>
   type PipedParser<'i,'a,'b,'u> = Piped of Parser<'i,'a->'b,'u>
@@ -64,6 +64,13 @@ module Implementation =
     static member inline (?<-) (PlusMarker, p1, p2) = p1 + p2
 
   let inline (+) p1 p2 = (?<-) PlusMarker p1 p2
+
+  type DPlusMarker = DPlusMarker with
+    static member (?<-) (DPlusMarker, p1: PipedParser<'i,'a->'b,'c,'u>, p2) = p1 + +p2
+    static member (?<-) (DPlusMarker, p1: Capture<'i,'r,'u>, p2) = p1 + +p2
+    static member (?<-) (DPlusMarker, p1: Parser<'i,'r,'u>, p2) = p1 + +p2
+
+  let inline (++) p1 p2 = (?<-) DPlusMarker p1 p2
 
   let (=>) ((Piped p1): PipedParser<'i,'a,'b,'u>) (f: 'a) = 
     plus p1 (returnP f) (fun r f -> r f)

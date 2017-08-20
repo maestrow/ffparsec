@@ -15,6 +15,6 @@ let p1 = returnP 1
 let p2 = returnP 2
 let p3 = returnP 3
 
-let p = +p1 + +p2 + +p3 => fun a b c -> a + b + c
+let p = p1 ++ p2 ++ p3 ++ p1 => fun a b c -> a + b + c
 let r = run p ""
 
