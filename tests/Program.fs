@@ -10,7 +10,9 @@ open Parsec.Primitives
 open Parsec.Run
 open Parsec.Logging
 open Parsec.Visualizers
-open Parsec.Pipes
+open Parsec.Extensions.DefaultParsers
+open Parsec.Extensions.Pipes
+open Parsec.Extensions.Qty
 
 let run p stream = 
   let logger = DebugLogger ()
@@ -196,6 +198,10 @@ let tests =
       ]
       testList "Three args" [
         testCase "+p1 + +p2 +p3 => fun a b c -> a + b + c" <| fun _ -> 
+          let a1 = 1
+          let a2 = 2
+          let a3 = 3
+          let ar = a1 + a2 + a3
           let p1 = returnP 1
           let p2 = returnP 2
           let p3 = returnP 3
@@ -205,9 +211,7 @@ let tests =
             pos =! 0
           )
       ]
-      testList "Failing, Consuming and State" [
-
-      ]
+      testList "Failing, Consuming and State" []
     ]
 
   ]

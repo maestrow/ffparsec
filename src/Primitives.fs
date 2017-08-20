@@ -6,7 +6,7 @@ open Parsec
 open Parsec.Combinators
 
 [<AutoOpen>]
-module Common =
+module Implemetation =
 
   //let private moveNext = anonym <| fun i -> i.SuccessConsume 1
 

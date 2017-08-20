@@ -3,12 +3,12 @@ namespace Parsec.Primitives
 open System
 open Parsec
 open Parsec.Combinators
-open System.Runtime.CompilerServices
+open Parsec.Primitives
 
-[<AutoOpen>]
+/// Parsing on char sequence as input stream
 module Chars =
 
-  let str = seqOf
+  let str (s: seq<char>) = seqOf s |>> String.Concat
 
   let tab () = take '\t'
 
@@ -21,3 +21,10 @@ module Chars =
   let spacesNl () = returnP ()//ToDo
 
   let spacesNl1 () = returnP ()//ToDo
+
+
+  // === Numbers
+
+  let digit () = returnP ()//ToDo
+
+  let intP () = returnP ()//ToDo

@@ -1,12 +1,11 @@
-namespace Parsec.Pipes
+namespace Parsec.Extensions
 
 open Parsec
 open Parsec.Combinators
 
-[<AutoOpen>]
-module Implementation =
+module Pipes =
 
-  let private wrap p = anonym <| fun i -> runParser p i
+  let wrap p = anonym <| fun i -> runParser p i
 
   type Capture<'i,'r,'u> = Capture of Parser<'i,'r,'u>
   type PipedParser<'i,'a,'b,'u> = Piped of Parser<'i,'a->'b,'u>
@@ -31,13 +30,13 @@ module Implementation =
               Ok (resultComposer res1 res2, pos2, state2)
 
   type PlusMarker = PlusMarker with
-    static member (?<-) (PlusMarker, (Piped p1): PipedParser<'i,'a->'b,'c,'u>, Capture p2) = 
+    static member (?<-) (PlusMarker, (Piped p1): PipedParser<'i,'f->'r2,'fr->'t,'u>, Capture p2) = 
       plus p1 p2 (fun r1 r2 -> (fun f -> (r1 f) r2))
       |> withName "Pipe + Capture"
       |> withParams [("p1", box p1); ("p2", box p2)]
       |> Piped
     static member (?<-) (PlusMarker, (Piped p1): PipedParser<'i,'a,'b,'u>, p2: Parser<'i,'r,'u>) = 
-      plus p1 p2 (fun r1 r2 -> (fun f -> r1 f))
+      plus p1 p2 (fun r1 r2 -> r1)
       |> withName "Pipe + Skip"
       |> withParams [("p1", box p1); ("p2", box p2)]
       |> Piped
