@@ -48,5 +48,5 @@ module Quantifiers =
 
   let repeatExactly n p = 
     [0..n-1]
-    |> List.map p
+    |> List.map (fun _ -> p)
     |> sequence

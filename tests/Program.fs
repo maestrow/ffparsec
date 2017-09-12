@@ -105,6 +105,14 @@ let tests =
             pos =! 3
           )
       ]
+      testList "repeatExactly" [
+        testCase "repeatExactly 2 (take 'a')" <| fun () -> 
+          let p = repeatExactly 2 (take 'a')
+          isOk (runr p "aa") (fun res pos _ -> 
+            res =! ['a';'a']
+            pos =! 2
+          )
+      ]
     ]
 
     testList "Logical" [
