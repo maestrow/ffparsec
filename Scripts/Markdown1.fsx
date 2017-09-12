@@ -41,11 +41,11 @@ module Lists =
       | "*" -> Asterisk
       | "+" -> Plus
       | _ -> Ordered
-    let distinct = items
-                    |> List.map ((fun (ListItem (bullet,_,_)) -> bullet) >> m)
-                    |> List.distinct
-    let bulletType = match distinct with [el] -> el | _ -> Mixed
-    List (bulletType, items)
+    items
+    |> List.map ((fun (ListItem (bullet,_,_)) -> bullet) >> m)
+    |> List.distinct
+    |> function [el] -> el | _ -> Mixed
+    |> fun bulletType -> List (bulletType, items)
 
 module Paragraph =
 

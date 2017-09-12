@@ -11,10 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Parsec.fsproj" />
+    <ProjectReference Include="..\..\..\src\Parsec.fsproj" /> 
   </ItemGroup> 
 
   <ItemGroup>
-    <Compile Include="Library.fs" />
+    <Compile Include="List.fs" />
+    <Compile Include="Paragraph.fs" />
+    <Compile Include="Main.fs" />
   </ItemGroup>
 </Project>

@@ -45,3 +45,8 @@ module Quantifiers =
     some <|> none
     |> describe "opt" "Parses an optional occurrence of p and returns an option value"
     |> withParams [("p", box p)]
+
+  let repeatExactly n p = 
+    [0..n-1]
+    |> List.map p
+    |> sequence
