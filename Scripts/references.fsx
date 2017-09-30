@@ -10,7 +10,8 @@
 #load "../src/Combinators.Quantifiers.fs"
 #load "../src/Combinators.Input.fs"
 #load "../src/Combinators.Common.fs"
-#load "../src/Primitives.Common.fs"
+#load "../src/Primitives.fs"
 #load "../src/Primitives.Chars.fs"
+
 #load "../src/Visualizers/ConsoleParserVisualizer.fs"
 #load "../src/Visualizers/ConsoleDebugLogVisualizer.fs"

@@ -85,6 +85,25 @@ let tests =
     ]
 
     testList "Quantifiers" [
+      testList "repeatExactly" [
+        testCase "repeatExactly 2 (take 'a') on \"a\"" <| fun () -> 
+          let p = repeatExactly 2 (take 'a')
+          isError (runr p "a")
+        testCase "repeatExactly 2 (take 'a') on \"aa\"" <| fun () -> 
+          let p = repeatExactly 2 (take 'a')
+          isOk (runr p "aa") (fun res pos _ -> 
+            res =! ['a';'a']
+            pos =! 2
+          )
+      ]
+      testList "repeatNoMore" [
+        testCase "repeatNoMore 3 (take 'a')" <| fun () -> 
+          let p = repeatNoMore 3 (take 'a')
+          isOk (runr p "aaaa") (fun res pos _ -> 
+            res =! ['a';'a';'a']
+            pos =! 3
+          )
+      ]
       testList "many" [ 
         testCase "many 1" <| fun () ->
           let p = any () |> many
@@ -105,12 +124,52 @@ let tests =
             pos =! 3
           )
       ]
-      testList "repeatExactly" [
-        testCase "repeatExactly 2 (take 'a')" <| fun () -> 
-          let p = repeatExactly 2 (take 'a')
+      testList "repeatAtLeast" [
+        testCase "repeatAtLeast 2 (take 'a') on \"a\"" <| fun () -> 
+          let p = repeatAtLeast 2 (take 'a')
+          let r = runr p "a"
+          isError r
+        testCase "repeatAtLeast 2 (take 'a') on \"aa\"" <| fun () -> 
+          let p = repeatAtLeast 2 (take 'a')
           isOk (runr p "aa") (fun res pos _ -> 
             res =! ['a';'a']
             pos =! 2
+          )        
+        testCase "repeatAtLeast 2 (take 'a') on \"aaaa\"" <| fun () -> 
+          let p = repeatAtLeast 2 (take 'a')
+          isOk (runr p "aaaa") (fun res pos _ -> 
+            res =! ['a';'a';'a';'a']
+            pos =! 4
+          )
+      ]
+      testList "repeatFromTo" [
+        testCase "repeatFromTo 2 4 (take 'a') on \"a\"" <| fun () -> 
+          let p = repeatFromTo 2 4 (take 'a')
+          let r = runr p "a"
+          isError r
+        testCase "repeatFromTo 2 4 (take 'a') on \"aa\"" <| fun () -> 
+          let p = repeatFromTo 2 4 (take 'a')
+          isOk (runr p "aa") (fun res pos _ -> 
+            res =! ['a';'a']
+            pos =! 2
+          )
+        testCase "repeatFromTo 2 4 (take 'a') on \"aaa\"" <| fun () -> 
+          let p = repeatFromTo 2 4 (take 'a')
+          isOk (runr p "aaa") (fun res pos _ -> 
+            res =! ['a';'a';'a']
+            pos =! 3
+          )
+        testCase "repeatFromTo 2 4 (take 'a') on \"aaaa\"" <| fun () -> 
+          let p = repeatFromTo 2 4 (take 'a')
+          isOk (runr p "aaaa") (fun res pos _ -> 
+            res =! ['a';'a';'a';'a']
+            pos =! 4
+          )
+        testCase "repeatFromTo 2 4 (take 'a') on \"aaaaa\"" <| fun () -> 
+          let p = repeatFromTo 2 4 (take 'a')
+          isOk (runr p "aaaaa") (fun res pos _ -> 
+            res =! ['a';'a';'a';'a']
+            pos =! 4
           )
       ]
     ]

@@ -1,0 +1,1 @@
+./run.cmd --sequenced --summary
