@@ -19,7 +19,7 @@ module Common =
   let sepBy p sep =
     sepBy1 p sep <|> returnP []
 
-  let attemt p = 
+  let attempt p = 
     fun input -> 
       let result = runParser p input
       match result with

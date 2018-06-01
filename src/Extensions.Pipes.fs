@@ -75,5 +75,3 @@ module Pipes =
     plus p1 (returnP f) (fun r f -> r f)
     |> withName "=>"
     |> withParams [("p1", box p1); ("f", box f)]
-
-  

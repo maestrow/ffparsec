@@ -29,7 +29,7 @@ let createInput stream state logger =
     InputStream = stream
     Position = 0
     UserState = state
-    DebugLogger = logger
+    DebugLogger = Some logger
   }
 
 let isOk r callback = 

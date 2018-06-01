@@ -1,8 +1,6 @@
 namespace Parsec
 
-open Parsec.Utils
 open Parsec.Types.ParserInfo
-open Result
 
 type Parser<'Item, 'Result, 'UserState> = 
   {
@@ -20,7 +18,7 @@ and Input<'Item, 'UserState> =
     /// Current input stream position
     Position: int
     UserState: 'UserState
-    DebugLogger: IDebugLogger
+    DebugLogger: IDebugLogger option
   } 
 
 and ParseResult<'Result, 'UserState> = 
