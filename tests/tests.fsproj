@@ -3,9 +3,10 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net461</TargetFramework> 
   </PropertyGroup>
+  
   <ItemGroup>
-    <PackageReference Include="FSharp.Core" Version="4.1.*" />
-    <PackageReference Include="FSharp.NET.Sdk" Version="1.0.*" PrivateAssets="All" />
+    <PackageReference Include="FSharp.Core" Version="4.3.4" />
+    <PackageReference Include="FSharp.NET.Sdk" Version="1.0.5" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\Parsec.fsproj" />
