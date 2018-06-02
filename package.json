@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "webpack -p",
+    "start": "webpack-dev-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "copy-webpack-plugin": "^4.5.1",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "fable-loader": "^1.1.6",
+    "fable-utils": "^1.0.6",
+    "html-webpack-plugin": "^3.0.6",
+    "webpack": "^4.10.2",
+    "webpack-cli": "^2.1.5",
+    "webpack-dev-server": "^3.1.4"
+  }
+}

@@ -21,3 +21,6 @@ _[Dd]eploy/
 
 # Visual Studio
 .vs/
+
+node_modules
+output

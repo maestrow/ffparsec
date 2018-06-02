@@ -14,10 +14,31 @@
 - серии статей [Understanding Parser Combinators](https://fsharpforfunandprofit.com/series/understanding-parser-combinators.html)
 - Библиотеки http://rspeele.github.io/FParsec-Pipes
 
+## Компиляция и запуск
 
-## Запуск тестов
+- [Paket-Bootstrap](https://gist.github.com/maestrow/94d99017380adbcadff29f048f423729#file-paket-bootstrap-md)
 
-Запуск тестов последовательно с детализацией: `./run.cmd --sequenced --summary` или `./runDetailed.bat`.
+Компиляция:
+
+`build.cmd` или:
+
+    cd src
+    dotnet restore
+    dotnet build
+
+
+### Компиляция в javascript
+
+    npm i
+    cd src
+    dotnet restore
+    dotnet fable npm-run build
+
+
+### Запуск тестов
+
+- `run.bat` параллельный запуск
+- `./runDetailed.bat` (или `./run.cmd --sequenced --summary`) - последовательно с детализацией.
 
 
 ## Дальнейнее развитие
