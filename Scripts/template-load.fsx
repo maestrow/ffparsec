@@ -1,3 +1,7 @@
+(*
+  A template for playing with parsees library. Copy it and do your experiments.
+  -load - using #load
+*)
 #load "references.fsx"
 
 open Parsec
