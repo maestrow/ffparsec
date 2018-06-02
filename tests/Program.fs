@@ -4,15 +4,15 @@ open Expecto
 open Swensen.Unquote
 
 open Parsec
-open Parsec.Types.ParserInfo
+//open Parsec.Types.ParserInfo
 open Parsec.Combinators
 open Parsec.Primitives
-open Parsec.Run
 open Parsec.Logging
 open Parsec.Visualizers
 open Parsec.Extensions.DefaultParsers
 open Parsec.Extensions.Pipes
 open Parsec.Extensions.Qty
+open Parsec.Types.ParserInfo
 
 let run p stream = 
   let logger = DebugLogger ()
@@ -23,14 +23,6 @@ let runr p stream = run p stream |> fst
 
 /// Run parser on stream and get logger
 let runl p stream = run p stream |> snd
-
-let createInput stream state logger = 
-  {
-    InputStream = stream
-    Position = 0
-    UserState = state
-    DebugLogger = Some logger
-  }
 
 let isOk r callback = 
   match r with

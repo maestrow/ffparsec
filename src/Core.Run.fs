@@ -28,16 +28,17 @@ let runParser (p: Parser<'i,'r,'u>) (input: Input<'i,'u>) =
     dl.SaveResult result
     result
 
-
-let runWithLogger p stream state logger = 
+let createInput stream state logger = 
   {
     InputStream = stream
     Position = 0
     UserState = state
     DebugLogger = Some logger
   }
-  |> runParser p
 
+let runWithLogger p stream state logger = 
+  createInput stream state logger 
+  |> runParser p
 
 let runParserOnString (p: Parser<char,'r,'u>) (inputStr: string) (state: 'u) = 
   let input = Input.FromString (inputStr, state)
