@@ -4,15 +4,11 @@ open Expecto
 open Swensen.Unquote
 
 open Parsec
-//open Parsec.Types.ParserInfo
 open Parsec.Combinators
-open Parsec.Primitives
 open Parsec.Logging
-open Parsec.Visualizers
-open Parsec.Extensions.DefaultParsers
 open Parsec.Extensions.Pipes
 open Parsec.Extensions.Qty
-open Parsec.Types.ParserInfo
+open Parsec.Chars
 
 let run p stream = 
   let logger = DebugLogger ()

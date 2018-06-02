@@ -3,7 +3,6 @@ namespace Parsec.Visualizers
 open System
 
 open Parsec
-open Parsec.Types.ParserInfo
 
 module ConsoleParserVisualizer = 
   let serialize (parser: ParserInfo) (showDescr: bool) = 

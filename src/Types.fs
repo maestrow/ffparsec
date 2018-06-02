@@ -1,7 +1,5 @@
 namespace Parsec
 
-open Parsec.Types.ParserInfo
-
 type Parser<'Item, 'Result, 'UserState> = 
   {
     Info: ParserInfo

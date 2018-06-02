@@ -1,10 +1,8 @@
-namespace Parsec.Extensions
+namespace Parsec.Primitives.Chars.Extensions
 
-open System
 open Parsec
 open Parsec.Combinators
-open Parsec.Primitives
-open Parsec.Primitives.Chars
+open Parsec.Chars
 
 module DefaultParsers = 
   

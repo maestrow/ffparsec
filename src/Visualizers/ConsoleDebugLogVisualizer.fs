@@ -3,7 +3,6 @@ namespace Parsec.Visualizers
 open System
 open Parsec.Utils.Trees
 open Parsec
-open Parsec.Types.ParserInfo
 open Parsec.Logging
 
 module ConsoleDebugLogVisualizer = 

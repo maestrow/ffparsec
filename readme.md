@@ -14,6 +14,10 @@
 - серии статей [Understanding Parser Combinators](https://fsharpforfunandprofit.com/series/understanding-parser-combinators.html)
 - Библиотеки http://rspeele.github.io/FParsec-Pipes
 
+## Структура проекта
+
+См. комментарии в `Parsec.fsproj`
+
 ## Компиляция и запуск
 
 - [Paket-Bootstrap](https://gist.github.com/maestrow/94d99017380adbcadff29f048f423729#file-paket-bootstrap-md)

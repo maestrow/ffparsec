@@ -1,4 +1,4 @@
-namespace Parsec.Types.ParserInfo
+namespace Parsec
 
 type ParserInfo = 
   {

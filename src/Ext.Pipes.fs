@@ -64,12 +64,12 @@ module Pipes =
 
   let inline (+) p1 p2 = (?<-) PlusMarker p1 p2
 
-  type DPlusMarker = DPlusMarker with
-    static member (?<-) (DPlusMarker, p1: PipedParser<'i,'a->'b,'c,'u>, p2) = p1 + +p2
-    static member (?<-) (DPlusMarker, p1: Capture<'i,'r,'u>, p2) = p1 + +p2
-    static member (?<-) (DPlusMarker, p1: Parser<'i,'r,'u>, p2) = p1 + +p2
+  type DoublePlusMarker = DoublePlusMarker with
+    static member (?<-) (DoublePlusMarker, p1: PipedParser<'i,'a->'b,'c,'u>, p2) = p1 + +p2
+    static member (?<-) (DoublePlusMarker, p1: Capture<'i,'r,'u>, p2) = p1 + +p2
+    static member (?<-) (DoublePlusMarker, p1: Parser<'i,'r,'u>, p2) = p1 + +p2
 
-  let inline (++) p1 p2 = (?<-) DPlusMarker p1 p2
+  let inline (++) p1 p2 = (?<-) DoublePlusMarker p1 p2
 
   let (=>) ((Piped p1): PipedParser<'i,'a,'b,'u>) (f: 'a) = 
     plus p1 (returnP f) (fun r f -> r f)

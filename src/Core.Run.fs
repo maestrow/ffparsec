@@ -2,8 +2,6 @@
 module Parsec.Run
 
 open Parsec
-open Parsec.Types.ParserInfo
-open Parsec.Types
 
 type Input<'Item, 'UserState> with
   static member FromString (str: string, state: 'u) = 

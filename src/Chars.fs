@@ -1,18 +1,17 @@
-namespace Parsec.Primitives
+namespace Parsec.Chars
 
 open System
-open Parsec
 open Parsec.Combinators
-open Parsec.Primitives
 
 /// Parsing on char sequence as input stream
-module Chars =
+[<AutoOpen>]
+module Primitives =
 
   let str (s: seq<char>) = seqOf s |>> String.Concat
 
   let tab () = take '\t'
 
-  let newLine () = choice [skip '\n'; skip '\r' .>>. skip '\n' |>> ignore; skip '\r'] |>> (fun i -> '\n')
+  let newLine () = choice [skip '\n'; skip '\r' .>>. skip '\n' |>> ignore; skip '\r'] |>> (fun _ -> '\n')
 
   let spaces () = returnP () //ToDo
 

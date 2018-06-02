@@ -1,15 +1,12 @@
 namespace Parsec
 
-open System
-open Parsec.Types.ParserInfo
-
-module ParserInfoExtensions = 
+module private ParserInfoExtensions = 
   type ParserInfo with
     static member Default = { Name = ""; Description = ""; Parameters = []; IsAnonym = false }
     static member Anonym = { ParserInfo.Default with IsAnonym = true }
   
 [<AutoOpen>]
-module ParserDescriptionFunctions =
+module ParserDescription =
 
   open ParserInfoExtensions
   /// Adds to parser name and description, extracted from parser definition function (a function, from where describe was called)

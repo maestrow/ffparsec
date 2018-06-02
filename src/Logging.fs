@@ -4,7 +4,6 @@ open System.Collections.Generic
 open System.Linq
 
 open Parsec
-open Parsec.Types.ParserInfo
 open Parsec.Utils.Trees
 
 type LogResultItem = 
