@@ -34,9 +34,13 @@ module List =
   type IListState =
     abstract member ListState: ListState
 
-  let getListState = getUserState () |>> (fun us -> us.ListState)
-  let indent = %"  "
-  let indentOfCurrentLevel = getListState () >>= (fun (state: (ListLevel level) -> repeatExactly level indent)
+  module Parsers = 
 
-  
-  runParserOnString indent "" (Unchecked.defaultof<IListState>) |> ignore
+    let getListState = getUserState () |>> (fun (us: IListState) -> us.ListState)
+    let indent = %"  "
+    let indentOfCurrentLevel = getListState >>= (fun (ListLevel level) -> repeatExactly level indent |>> String.concat "")
+
+    let bullet = +p<int> + %'.'
+
+
+  runParserOnString Parsers.indent "" (Unchecked.defaultof<IListState>) |> ignore

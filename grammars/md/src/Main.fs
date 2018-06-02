@@ -19,4 +19,4 @@ module Main =
       member this.ListState with get() = this.ListState
     static member Default = { ListState = ListLevel 0 }
 
-  runParserOnString indent "" UserState.Default |> ignore
+  runParserOnString Parsers.indent "" UserState.Default |> ignore
