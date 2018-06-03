@@ -1,7 +1,11 @@
 .paket
+paket-files
 packages
 *.dll
 *.exe
+node_modules
+build
+.fake
 
 # Build results
 [Dd]ebug/
@@ -21,6 +25,3 @@ _[Dd]eploy/
 
 # Visual Studio
 .vs/
-
-node_modules
-output

@@ -4,7 +4,13 @@ clitool dotnet-fable
 nuget Fable.Core
 
 group Tests
-storage: none
-source https://www.nuget.org/api/v2
-nuget Expecto
-nuget Unquote
+    storage: none
+    source https://www.nuget.org/api/v2
+    nuget Expecto
+    nuget Unquote
+
+group CI
+    storage: none
+    source https://www.nuget.org/api/v2
+    nuget Fake.Core.Target prerelease
+    nuget Fake.DotNet.Cli prerelease
