@@ -4,38 +4,46 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+  <!-- 
+    === Generic Parser Combinators Library 
+    -->
+
     <!-- Types -->
-    <Compile Include="Types.ParserInfo.fs" />
-    <Compile Include="Types.fs" />
+    <Compile Include="0-GenericLib/1-Types/1-Types.ParserInfo.fs" />
+    <Compile Include="0-GenericLib/1-Types/2-Types.fs" />
 
     <!-- Core -->
-    <Compile Include="Core.InputExtensions.fs" />
-    <Compile Include="Core.ParserDescription.fs" />
-    <Compile Include="Core.Run.fs" />
+    <Compile Include="0-GenericLib/2-Core/Core.InputExtensions.fs" />
+    <Compile Include="0-GenericLib/2-Core/Core.ParserDescription.fs" />
+    <Compile Include="0-GenericLib/2-Core/Core.Run.fs" />
 
     <!-- Parser Compinators -->
-    <Compile Include="Combinators.Core.fs" />
-    <Compile Include="Combinators.AndOrNotSeq.fs" />
-    <Compile Include="Combinators.Quantifiers.fs" />
-    <Compile Include="Combinators.Input.fs" />
-    <Compile Include="Combinators.Common.fs" />
+    <Compile Include="0-GenericLib/3-Combinators/1-Cmb.Core.fs" />
+    <Compile Include="0-GenericLib/3-Combinators/2-Cmb.AndOrNotSeq.fs" />
+    <Compile Include="0-GenericLib/3-Combinators/3-Cmb.Quantifiers.fs" />
+    <Compile Include="0-GenericLib/3-Combinators/3-Cmb.Input.fs" />
+    <Compile Include="0-GenericLib/3-Combinators/3-Cmb.Common.fs" />
 
     <!-- Parsers for Generic input type -->
-    <Compile Include="GenericPrimitives.fs" />
+    <Compile Include="0-GenericLib/4-GenericPrimitives/GenericPrimitives.fs" />
     
     <!-- Extensions: use existed parsers in more convenient way -->
-    <Compile Include="Ext.Pipes.fs" />
-    <Compile Include="Ext.Qty.fs" />
+    <Compile Include="0-GenericLib/5-Extensions/Ext.Pipes.fs" />
+    <Compile Include="0-GenericLib/5-Extensions/Ext.Qty.fs" />
     
-    <!-- Parsers and extensions for Chars input type -->
-    <Compile Include="Chars.fs" />
-    <Compile Include="Chars.Ext.DefaultParsers.fs" />
+  <!-- 
+    === Parsers and extensions for Chars input stream
+    -->
+    <Compile Include="Chars/1-Chars.Primitives.fs" />
+    <Compile Include="Chars/2-Chars.Ext.DefaultParsers.fs" />
     
-    <!-- DebugLogger and Visualizers. This can be extracted to another project. -->
-    <Compile Include="Utils.Trees.fs" />
-    <Compile Include="Logging.fs" />
-    <Compile Include="Visualizers/ConsoleParserVisualizer.fs" />
-    <Compile Include="Visualizers/ConsoleDebugLogVisualizer.fs" />
+  <!-- 
+    === DebugLogger and Visualizers
+    -->
+    <Compile Include="DebugTools/1-Utils.Trees.fs" />
+    <Compile Include="DebugTools/2-Logging.fs" />
+    <Compile Include="DebugTools/ConsoleParserVisualizer.fs" />
+    <Compile Include="DebugTools/ConsoleDebugLogVisualizer.fs" />
   </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

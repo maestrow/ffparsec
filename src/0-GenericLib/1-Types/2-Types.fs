@@ -23,6 +23,8 @@ and ParseResult<'Result, 'UserState> =
   | Ok of result: 'Result * position: int * state: 'UserState
   | Error of string
 
+// Additional Types for Debugging
+
 and IDebugLogger = 
   abstract member Position: int with get, set
   abstract member LevelDown: unit -> unit
