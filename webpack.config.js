@@ -23,7 +23,7 @@ var babelOptions = fableUtils.resolveBabelOptions({
 
 var commonPlugins = [
   new HtmlWebpackPlugin({
-    filename: resolve('./output/index.html'),
+    filename: resolve('./output-js/index.html'),
     template: resolve('./src/index.html')
   })
 ];
@@ -37,7 +37,7 @@ module.exports = (env, argv) => ({
   devtool: isProduction ? false : 'source-map',
   entry: resolve('./src/Parsec.fsproj'),
   output: {
-    path: resolve('./output'),
+    path: resolve('./output-js'),
     filename: isProduction ? '[name].[hash].js' : '[name].js'
   },
   optimization: {

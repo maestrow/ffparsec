@@ -25,11 +25,8 @@
 
 Компиляция:
 
-`build.cmd` или:
+`build.cmd`
 
-    cd src
-    dotnet restore
-    dotnet build
 
 
 ### Компиляция в javascript
@@ -39,6 +36,7 @@
     dotnet restore
     dotnet fable npm-run build
 
+Результат будет помещен в `output-js`
 
 ### Запуск тестов
 
