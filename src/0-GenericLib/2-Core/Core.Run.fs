@@ -38,13 +38,6 @@ let runWithLogger p stream state logger =
   createInput stream state logger 
   |> runParser p
 
-let runParserOnString (p: Parser<char,'r,'u>) (inputStr: string) (state: 'u) = 
-  let input = Input.FromString (inputStr, state)
-  runParser p input
-
-let run (p: Parser<char,'r, unit>) (input: string) = 
-  runParserOnString p input ()
-
 let printResult (result: ParseResult<'Result, 'UserState>) =
   match result with
   | Ok (value, pos, state) -> 

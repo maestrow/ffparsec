@@ -35,6 +35,7 @@
   <!-- 
     === Parsers and extensions for Chars input stream
     -->
+    <Compile Include="Chars/Chars.Run.fs" />
     <Compile Include="Chars/1-Chars.Primitives.fs" />
     <Compile Include="Chars/2-Chars.Ext.DefaultParsers.fs" />
     
