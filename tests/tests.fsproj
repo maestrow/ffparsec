@@ -8,7 +8,11 @@
     <ProjectReference Include="..\src\Parsec.fsproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.fs" />
+    <Compile Include="Fixtures.fs" />
+    
+    <Compile Include="Chars/1-Chars.Primitives.tests.fs" />
+
+    <Compile Include="Unsorted.fs" />
   </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>
