@@ -3,6 +3,7 @@ namespace Parsec.Extensions
 open Parsec
 open Parsec.Combinators
 
+[<AutoOpen>]
 module Qty = 
   
   type ExactCount(count) =
