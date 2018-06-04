@@ -2,7 +2,7 @@
   A template for playing with parsees library. Copy it and do your experiments.
   -r - using #r
 *)
-#r "../src/bin/debug/net461/Parsec.dll"
+#r "../build/bin/Parsec.dll"
 
 open Parsec
 open Parsec.Combinators
