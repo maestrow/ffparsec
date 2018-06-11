@@ -1,7 +1,8 @@
 [<AutoOpen>]
-module Parsec.Combinators.GenericPrimitives
+module Parsec.GenericPrimitives
 
 open Parsec
+open Parsec.Combinators
 
 //let private moveNext = anonym <| fun i -> i.SuccessConsume 1
 
@@ -40,6 +41,8 @@ let any () = takeIf (fun current -> true) |> describe "any" "Parse any item"
 //=== Sequence
 
 let seqOf s = seqP (=) s
+
+let until untilP doP = untilP |> notP >>. doP |> many
 
 
 //=== Skip 

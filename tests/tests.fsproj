@@ -10,7 +10,10 @@
   <ItemGroup>
     <Compile Include="Fixtures.fs" />
     
+    <Compile Include="4-GenericPrimitives/GenericPrimitives.tests.fs" />
     <Compile Include="Chars/1-Chars.Primitives.tests.fs" />
+    <Compile Include="Chars/2-Chars.Ext.DefaultParsers.tests.fs" />
+    
 
     <Compile Include="Unsorted.fs" />
   </ItemGroup>

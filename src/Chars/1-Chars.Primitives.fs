@@ -15,13 +15,15 @@ module Primitives =
 
   let newLine () = choice [skip '\n'; skip '\r' .>>. skip '\n' |>> ignore; skip '\r'] |>> (fun _ -> '\n')
 
-  let spaces () = returnP () //ToDo
+  let spaces () = choice [take ' '; tab()] * qty.[0..] |>> ignore
 
-  let spaces1 () = returnP ()//ToDo
+  let spaces1 () = choice [take ' '; tab()] * qty.[1..] |>> ignore
 
-  let spacesNl () = returnP ()//ToDo
+  // Spaces allowing new line. Zero or more.
+  let spacesNl () = choice [take ' '; tab(); newLine()] * qty.[0..] |>> ignore
 
-  let spacesNl1 () = returnP ()//ToDo
+  // Spaces allowing new line. One or more.
+  let spacesNl1 () = choice [take ' '; tab(); newLine()] * qty.[1..] |>> ignore
 
 
   // === Numbers

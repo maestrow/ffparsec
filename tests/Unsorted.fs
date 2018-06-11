@@ -43,18 +43,6 @@ let tests =
             pos =! 0
           )
       ]
-
-      testList "one" [
-        testCase "one should fail on wrong item" <| fun _ -> 
-          isError <| runr (take 'a') "b"
-        testCase "one should fail when position is at EOF" <| fun _ -> 
-          isError <| runr (take 'a') ""
-        testCase "one succeeded" <| fun _ -> 
-          isOk (runr (take 'a') "a") (fun res pos _ -> 
-            res =! 'a'
-            pos =! 1
-          )
-      ]
     ]
 
     testList "Quantifiers" [

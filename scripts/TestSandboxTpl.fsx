@@ -24,7 +24,7 @@ let until untilP doP = untilP |> notP >>. doP |> many
 let test1 () = 
   let p = until (seqOf "fin") (any()) |>> String.Concat
   isOk (runr p "123finxyz") (fun res pos _ -> 
-    printfn "res=%s, pos=%d" res pos
+    printf "res=%s, pos=%d" res pos
   )
 
 test1()
