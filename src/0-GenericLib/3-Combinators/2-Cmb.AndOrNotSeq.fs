@@ -42,6 +42,7 @@ let (<|>) = orElse
 let choice listOfParsers = 
   listOfParsers 
   |> List.reduce (<|>)
+  |> newParser "choice"
 
 /// Process the list of parsers
 let sequence parserList =

@@ -21,9 +21,14 @@ module ParserDescription =
           }
     }
 
+  /// Get parse function from parser
+  let fn (p: Parser<_, _, _>) = p.Fn
+
   /// Creates parser from parse function
   let parser name descr (fn: ParseFn<'i,'r,'u>) = 
     { Info = ParserInfo.Default; Fn = fn } |> describe name descr
+
+  let newParser name p = p |> fn |> parser name ""
 
   /// Creates anonymous parser from parse function
   let anonym (fn: ParseFn<'i,'r,'u>) = //{ Parser<'i,'r,'u>.Anonym with Fn = fn }
@@ -31,9 +36,6 @@ module ParserDescription =
       Info = ParserInfo.Anonym
       Fn = fn
     }
-
-  /// Get parse function from parser
-  let fn (p: Parser<_, _, _>) = p.Fn
 
   /// Add a name to parser
   let withName (name: string) (p: Parser<_, _, _>) = 

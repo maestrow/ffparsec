@@ -19,10 +19,10 @@ let userStateSatisfies (f: 'u -> bool) =
     | false -> Error "userStateSatisfies"
 
 let createParserForwardedToRef () =
-  let dummyParser = anonym <| fun input -> failwith "a parser created with createParserForwardedToRef was not initialized"
+  let dummyParser = anonym <| fun _ -> failwith "a parser created with createParserForwardedToRef was not initialized"
   let r = ref dummyParser
-  let p = anonym <| fun input -> !r |> (fun a -> a.Fn) <| input
-  p, r : Parser<'i,'r,'u> * Parser<'i,'r,'u> ref
+  let p = anonym <| fun input -> !r |> fn <| input
+  p, r
 
 /// Return current item
 let current () = 

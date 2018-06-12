@@ -25,8 +25,8 @@ let tests =
           parser "p" ""
           <| fun input -> 
             Ok ((), -1, input.UserState) // set out of range position
-        let logger = DebugLogger ()
-        let input = createInput "" () logger
+        let logger = DebugLogger () :> IDebugLogger
+        let input = createInput "" () (Some logger)
         let inputNew = input.UpdateState (runParser p input)
         input.Position =! 0
         inputNew.Position =! -1

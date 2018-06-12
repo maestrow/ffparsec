@@ -13,7 +13,7 @@ module Primitives =
 
   let tab () = take '\t'
 
-  let newLine () = choice [skip '\n'; skip '\r' .>>. skip '\n' |>> ignore; skip '\r'] |>> (fun _ -> '\n')
+  let newLine () = choice [skip '\n'; skip '\r' .>>. skip '\n' |>> ignore; skip '\r'] |>> (fun _ -> '\n') |> withName "newLine"
 
   let spaces () = choice [take ' '; tab()] * qty.[0..] |>> ignore
 
@@ -28,7 +28,7 @@ module Primitives =
 
   // === Numbers
 
-  let digit () : Parser<char, char, 'a> = takeIf (int >> (fun i -> i > 47 && i < 58))
+  let digit () : Parser<char, char, 'a> = takeIf (int >> (fun i -> i > 47 && i < 58)) |> withName "digit"
 
   let intP () = 
     digit() * qty.[1..] |>> (
@@ -38,3 +38,4 @@ module Primitives =
         (1, 0)
       >> snd
     )
+    |> withName "intP"

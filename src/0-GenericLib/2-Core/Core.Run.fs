@@ -31,11 +31,11 @@ let createInput stream state logger =
     InputStream = stream
     Position = 0
     UserState = state
-    DebugLogger = Some logger
+    DebugLogger = logger
   }
 
 let runWithLogger p stream state logger = 
-  createInput stream state logger 
+  createInput stream state (Some logger)
   |> runParser p
 
 let printResult (result: ParseResult<'Result, 'UserState>) =
